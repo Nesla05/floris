@@ -1,0 +1,110 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+
+        <section class="content-main p-5">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or Change Status</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <!-- <div class="card"> -->
+                <!-- <div class="card-body"> -->
+                    <div class="row p-5">
+                        <div class="col-md-3 p-5 shadow mb-5 bg-white rounded">
+
+                            <form action="/addCategory" method="post">
+
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" />
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-outline-success">Create category</button><br><br>
+                                    
+                                    <p style="color: rgb(179, 15, 15) ;" class="text-center">
+                                        <%=(typeof message!=='undefined')?message:""%>
+                                      </p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-9 p-5 ">
+                            <div class="p-5 table-responsive shadow mb-5 bg-white rounded">
+                                <table class="table table-hover">
+                                    <thead class="table-success">
+                                        <tr>
+                                          
+                                           
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Is Listed</th>
+                                            <th>Action</th>
+                                            <th>edit</th>
+                                        </tr>
+                                    </thead>
+                                   <tbody>
+
+                                    
+              
+                                       <% categories.forEach((category)=> { %> 
+                                            <tr>
+                                                <td><b><%= category.name %></b></td> 
+                                               <!-- <td><%= category.description %></td>  -->
+                                               <td title="<%=category.description %>" class="tooltip-ellipsis"><%=category.description %></td> 
+                                                <% if (category.isListed == true) { %> 
+                                                    <td><span style="color: green;"></span>List</td> 
+                                                  <% } else { %>  
+                                                     <td><span style="color: red;"></span>Unlist</td> 
+                                                  <% } %> 
+                                              
+                                                         
+                                                            
+                                                            <td  class="text-center">
+                                                                <div>
+                                                                 <% if (category.isListed == true) { %> 
+                                                                     <a  href="/changeStatus?id=<%=category._id %>">
+                                                                        <i class="fa-sharp fa-solid fa-eye" style="color: #212121;"></i></a>
+                                                                  
+                                                                
+                                                                 <% } else { %> 
+                                                                     <a  href="/changeStatus?id=<%=category._id %>">
+                                                                        <i class="fa-solid fa-eye-slash" style="color: #393a3c;"></i>
+                                                                     </a>
+                                                                     
+                                                                  
+                                                                 <% } %>
+                                                               </div>
+                                                            </td>
+                                                              <td  class="text-center">
+                                                             <a  href="/editCategory?id=<%=category._id %>">
+                                                                <i class="fa-solid fa-pen" style="color: #292929;"></i></a>
+
+                                                             </td>
+                                                           
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                    
+                                    
+                                </table>
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
+            </div> 
+        </section> 
+
+
+      
+
+
+
+<%- include('../layout/adminFooter.ejs') %>

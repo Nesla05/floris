@@ -1,0 +1,155 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<section>
+<div class="content-header ">
+    <div class="col">
+    <div>
+        <h2 class="content-title card-title">Product </h2>
+        <p>Add, edit or Change Status</p>
+    </div>
+    <div>
+        <input type="text" placeholder="Search Product" class="form-control bg-white">
+    </div>
+</div>
+</div>
+<br><br>
+
+    <div class="p-3">
+        <a href="/addProduct" class="btn btn-primary btn-sm rounded ">ADD</a>
+    </div>
+                <div class=" p-3">
+                    <div class=" p-3 shadow mb-5 bg-white rounded">
+                        <table class="table table-hover">
+                            <thead class="table-danger">
+                                <tr class="text-center">
+                                    <th>Image</th>
+                                    <th>Product Id</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
+                                    <th>Stock</th>
+                                    <th>Orginal Price</th>
+                                    <th>Price</th>
+                                    <th>Edit</th>
+                                    <!-- <th>Delete</th> -->
+                                    <th>List/Unlist</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% product.forEach((item) => { %>
+                                <tr>
+                                    <td class="text-center">
+                                        <div class="left">
+                                            <img src="/uploads/<%= item.images[0] %>"
+                                                class="img-sm img-thumbnail" alt="Item"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#imageModal<%= item._id %>">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.id %></p>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.name %></p>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.type %></p>
+                                        </div>
+                                    </td>
+                                    
+                                   
+                                      
+                                        
+                                          <td class="text-center">
+                                            <div class="info">
+                                              <p class="mb-0">
+                                                <% if (item.category) { %>
+                                                  <%= getCategoryName(item.category) %>
+                                                <% } else { %>
+                                                  Unknown Category
+                                                <% } %>
+                                              </p>
+                                            </div>
+                                          </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.brand %></p>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.stock %></p>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.orginalPrice %></p>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="info">
+                                            <p class="mb-0"><%= item.price %></p>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/editProduct?id=<%= item._id %>">
+                                            <i class="fa-solid fa-pen" style="color: #292929;"></i></a>
+                                    </td>
+                                    <!-- <td class="text-center">
+                                        <a href="/deleteProduct?id=<%= item._id %>">
+                                            <i class="fa-sharp fa-solid fa-trash" style="color: #262627;"></i>
+                                        </a>
+                                    </td> -->
+                                    <td  class="text-center">
+                                        <div>
+                                            <% if (item.is_listed == true) { %> 
+                                                <a  href="/productChangeStatus?id=<%= item._id %>">
+                                                    <i class="fa-sharp fa-solid fa-eye" style="color: #212121;"></i>
+                                                </a>
+                                            <% } else { %> 
+                                                <a  href="/productChangeStatus?id=<%= item._id %>">
+                                                    <i class="fa-solid fa-eye-slash" style="color: #393a3c;"></i>
+                                                </a>
+                                            <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+                <!-- Image Modals -->
+                <% product.forEach((item) => { %>
+                <div class="modal fade" id="imageModal<%= item._id %>" tabindex="-1" aria-labelledby="imageModalLabel<%= item._id %>"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div id="carousel<%= item._id %>" class="carousel slide" data-bs-ride="carousel">
+                                    <!-- Carousel Content Goes Here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+                
+            </div> <!-- .row // -->
+        </div> <!-- card body .// -->
+    </div> <!-- card .// -->
+</section>
+
+  
+  
+  <%- include('../layout/adminFooter.ejs') %>
+  

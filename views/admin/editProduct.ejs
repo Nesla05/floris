@@ -1,0 +1,172 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+<%- include('../layout/adminHeader.ejs') %>
+
+<div class="p-5 shadow mb-5 bg-white rounded ">
+<form method="post" action="editProduct">
+  <div class="content-header">
+    <h2 class="content-title">Edit Products</h2>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="">Product Name</label>
+      <input type="text" class="form-control" placeholder="Type here" name="name" value="<%= productData[0].name %>">
+      <input type="text" class="form-control" name="id" value="<%= productData[0]._id %>" hidden>
+  </div>
+    <div class="form-group col-md-6">
+      <label for="">Type</label>
+      <input class="form-control" placeholder="Type here" rows="4" name="type" value="<%= productData[0].type %>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress">Description</label>
+    <textarea class="form-control" placeholder="Type here" rows="4" name="description"><%= productData[0].description %></textarea>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="">Stock</label>
+      <input type="number" class="form-control" name="stock" value="<%= productData[0].stock %>">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="">Orginal Price</label>
+    <input type="number" class="form-control" placeholder="₹0.00" name="orginalPrice" value="<%= productData[0].orginalPrice %>">
+  </div>
+    <div class="form-group col-md-6">
+      <label for="">Price</label>
+      <input type="number" class="form-control" placeholder="₹0.00" name="price" value="<%= productData[0].price %>">
+    </div>
+  </div>
+ 
+  <div class="form-group">
+    <label for="inputAddress">Category</label>
+    <select class="form-control" id="categoryDropdown" onchange="changeCategory(this.value)" name="category">
+      <!-- Render options for productCategory -->
+      <% productCategory.forEach(function(category) { %>
+      <option value="<%= category._id %>" <% if (productData[0].category.toString() == category._id.toString()) { %>selected<% } %>><%= category.name %></option>
+      <% }); %>
+
+      <!-- Render options for allCategory -->
+      <% allCategory.forEach(function(category) { %>
+      <option value="<%= category._id %>"><%= category.name %></option>
+      <% }); %>
+  </select>
+</div>
+ 
+<button class="btn btn-primary" type="submit">Update</button>
+</form>
+</div>
+
+
+
+                      <div class="container col">
+                        <% productData[0].images.forEach((image,index)=>{ %>
+                          <div class="col">
+                            <img src="/uploads/<%= productData[0].images[index]%>" alt="" style="width: 100px;">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editImage" data-bs-index="<%=index%>">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteImage('<%= productData[0]._id %>','<%= index %>')">Delete</button>
+                          </div>
+                        <% }) %>
+                        <div class="d-flex">
+                          <label for="">Add Image</label>
+                          <form action="/product-add-image" method="post" enctype="multipart/form-data">
+                            <input type="file" name="image">
+                            <input type="text" name="productId" value="<%=productData[0]._id %>" hidden>
+                            <button type="submit">Submit</button>
+                            <p style="color: rgb(179, 15, 15) ;" class="text-center">
+                              <%=(typeof message!=='undefined')?message:""%>
+                            </p>
+                          </form>
+                        </div>
+                      </div>
+
+
+
+
+
+
+
+
+<div class="modal fade" id="editImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3">
+          <label for="">Add Image</label>
+          <form action="/edit-product-image" method="post" id="editImageForm" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <input type="text" name="productId" id="" value="<%= productData[0]._id %>" hidden>
+            <input type="text" name="index" id="imgIndex" value="" hidden>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="updateImageButton">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const deleteImage = (productId,imgIndex)=>{
+    console.log(productId,imgIndex);
+    $.ajax({
+      url:'/delete-product-image',
+      method:'DELETE',
+      data:{productId,imgIndex},
+      success:(response)=>{
+        console.log(response);
+        if(response){
+          location.reload()
+        }
+      }
+    })
+  }
+
+  //Setting imgIndex to the form dynamically
+  document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll('[data-bs-target="#editImage"]');
+    const imgIndexInput = document.getElementById("imgIndex");
+
+    editButtons.forEach(button => {
+      button.addEventListener("click", function () {
+        const indexValue = button.getAttribute("data-bs-index");
+        imgIndexInput.value = indexValue;
+      });
+    });
+  });
+
+  //edit product image
+  $(document).ready(function() {
+  $('#updateImageButton').on('click', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData($('#editImageForm')[0]);
+
+    $.ajax({
+      url: "/edit-product-image",
+      method: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        // Optionally, close the modal after successful update
+        location.reload()
+      },
+    });
+  });
+  });
+
+
+    
+</script>
+
+
+<%- include('../layout/adminFooter.ejs') %>

@@ -1,0 +1,55 @@
+<%- include('../layout/header.ejs') %>
+
+<div class="container">
+    
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <!-- <img src="/public/otpimage.jpg" alt=""> -->
+        <h2 class="text-center">OTP Verification</h2>
+        <p class="text-center">Please enter the OTP sent to your mobile number</p>
+
+        <form action="/forgotOtpVerify" method="post">
+          <div class="form-group">
+            <input type="text" id="form3Example3c" class="form-control" name="otp" />
+            <label class="form-label" for="form3Example3c">Your OTP Number</label>
+            <button type="submit" class="btn btn-dark btn-block">Verify OTP</button>
+          </div>
+        </form>
+        <div class="text-center mt-3">
+          <p id="timer" style="display: none;">Resend OTP in <span id="countdown">30</span> seconds</p>
+          <a href="/forgotresend" id="resendLink" style="display: none;"><button  class="btn btn-dark btn-block" id="resendBtn">Resend OTP</button></a>
+        </div>
+        <%=(typeof message!=='undefined' )?message:""%>
+      </div>
+    </div>
+  </div> 
+
+
+  <script>
+    // Timer
+    var countdownElement = document.getElementById('countdown');
+    var resendLink = document.getElementById('resendLink');
+    var timer = document.getElementById('timer');
+    var resendBtn = document.getElementById('resendBtn');
+    var countdown = 15; // Set the initial countdown value
+
+    function startCountdown() {
+      timer.style.display = 'block';
+      countdownElement.textContent = countdown;
+
+      var interval = setInterval(function() {
+        countdown--;
+
+        if (countdown === 0) {
+          clearInterval(interval);
+          timer.style.display = 'none';
+          resendLink.style.display = 'inline-block';
+        } else {
+          countdownElement.textContent = countdown;
+        }
+      }, 1000);
+    }
+
+    setTimeout(startCountdown); // Start the countdown after 10 seconds
+  </script>
+

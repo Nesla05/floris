@@ -1,0 +1,23 @@
+<%- include('../layout/header.ejs') %>
+
+<style>
+  /* CSS styles here */
+</style>
+
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Mobile Number Verification</h2>
+  <form action="/forgotverifyNumber" method="post">
+    <div class="form-group">
+      <label for="mobileNumber">Mobile Number:</label>
+      <input type="text" id="mobileNumber" name="mobile" value="<%=(typeof mobile!=='undefined')?mobile:'' %>" placeholder="Enter your mobile number">
+    </div>
+   
+      <button type="submit" class="btn">Submit</button>
+      <p><%=(typeof message!=='undefined')?message:'' %></p>
+    </div>
+  </form>
+</div>
+

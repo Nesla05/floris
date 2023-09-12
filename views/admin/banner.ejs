@@ -1,0 +1,126 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+
+        <section class="content-main p-5">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Banner </h2>
+                    <p>Add, edit or Change Status</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <!-- <div class="card"> -->
+                <!-- <div class="card-body"> -->
+                    <div class="row p-5">
+                        <div class="col-md-3 p-5 shadow mb-5 bg-white rounded">
+
+                            <form action="/addBanner" method="post" enctype="multipart/form-data">
+
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label"> bannerName</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="bannerName" name="bannerName" />
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+                                </div>
+
+                                <div class="col-md-25">
+                                
+                                  <div class="mb-4">
+                                      <label class="form-label">Image</label>
+                                      <input class="form-control"  multiple type="file" name="images">
+                                  </div>
+                                 
+                              </div> 
+                                <div class="d-grid">
+                                    <button class="btn btn-outline-success" type="submit">Create banner</button><br><br>
+                                    
+                                    <p style="color: rgb(179, 15, 15) ;" class="text-center">
+                                        <%=(typeof message!=='undefined')?message:""%>
+                                      </p>
+                                </div>
+                            </form>
+                        </div>
+                      
+
+                        <div class=" p-3">
+                          <div class=" p-3 shadow mb-5 bg-white rounded">
+                              <table class="table table-hover">
+                                  <thead class="table-danger">
+                                      <tr class="text-center">
+                                          <th>Image</th>
+                                          <th>Name</th>
+                                          <!-- <th>Description</th> -->
+                                          <th>Edit</th>
+                                          <!-- <th>Delete</th> -->
+                                          <th>List/Unlist</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <% banner.forEach((item) => { %>
+                                      <tr>
+                                          <td class="text-center">
+                                            <div class="left">
+                                                <img src="/uploads/<%= item.images[0] %>"
+                                                    class="img-sm img-thumbnail" alt="Item"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#imageModal<%= item._id %>">
+                                            </div>
+                                          </td>
+                                          <td class="text-center">
+                                              <div class="info">
+                                                  <p class="mb-0"><%= item.bannerName %></p>
+                                              </div>
+                                          </td>
+                                          <!-- <td class="text-center">
+                                              <div class="info">
+                                                  <p class="mb-0"><%= item.description %></p>
+                                              </div>
+                                          </td> -->
+                                          
+                                          <!-- <td class="text-center">
+                                              <a href="/editProduct?id=<%= item._id %>">
+                                                  <i class="fa-solid fa-pen" style="color: #292929;"></i></a>
+                                          </td> -->
+                                          <!-- <td class="text-center">
+                                              <a href="/deleteProduct?id=<%= item._id %>">
+                                                  <i class="fa-sharp fa-solid fa-trash" style="color: #262627;"></i>
+                                              </a>
+                                          </td> -->
+                                          <!-- <td  class="text-center">
+                                              <div>
+                                                  <% if (item.is_listed == true) { %> 
+                                                      <a  href="/productChangeStatus?id=<%= item._id %>">
+                                                          <i class="fa-sharp fa-solid fa-eye" style="color: #212121;"></i>
+                                                      </a>
+                                                  <% } else { %> 
+                                                      <a  href="/productChangeStatus?id=<%= item._id %>">
+                                                          <i class="fa-solid fa-eye-slash" style="color: #393a3c;"></i>
+                                                      </a>
+                                                  <% } %>
+                                              </div>
+                                          </td> -->
+                                      </tr>
+
+                                      
+                                      <% }); %>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+
+                    </div> 
+                </div>
+            </div> 
+        </section> 
+
+
+      
+
+
+
+<%- include('../layout/adminFooter.ejs') %>

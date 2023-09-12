@@ -1,0 +1,167 @@
+<%- include('../layout/header.ejs') %>
+
+
+<div class="py-1 bg-black">
+  <div class="container">
+    <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+      <div class="col-lg-12 d-block">
+        <div class="row d-flex">
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+            <span class="text">+ 1235 2355 98</span>
+          </div>
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+            <span class="text">youremail@email.com</span>
+          </div>
+          <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+            <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  <div class="container"> <div class="logo">
+    <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+  </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="oi oi-menu"></span> Menu
+    </button>
+
+    <div class="collapse navbar-collapse" id="ftco-nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="/showProduct" class="nav-link">Shop</a></li>
+       
+        <li class="nav-item"><a href="" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
+        <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<br><br><br><br><br>
+<section style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col">
+        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 100px;">
+            <h5 class="my-3"> <%= user.name %></h5>
+            <p class="text-muted mb-1"><%= user.email %></p>
+            
+            <div class="d-flex justify-content-center mb-2">
+              <!-- <button type="button" class="btn btn-primary">Follow</button> -->
+             
+            
+              <!-- <button type="button" class="btn btn-outline-primary ms-1">Logout</button> -->
+            </div>
+     
+          </div>
+        </div>
+        <li class="list-group-item py-1">
+          <a href="/profile-address" class="text-reset"> Address</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/user-order?id=<%= user._id %>" class="text-reset"> Order Details</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/wallet" class="text-reset">wallet</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/logout" class="text-reset">Logout</a>
+        </li>
+        <div class="card mb-4 mb-lg-0">
+          
+        </div>
+      </div>
+      <div class="card col-lg-8 mb-2"><br>
+        <div class="d-flex justify-content-end">
+          
+        </div>
+
+
+<div>
+
+  <div class="card col">
+    <div class="card-body">
+      <h4>Wallet Credited</h4>
+      <h6>Refund</h6>
+      
+         <table>
+          <thead>
+            <tr >
+              <th style="padding-right: 300px; ">Date</th>
+              <th>Amount</th>
+            
+          </tr>
+         
+      </thead>
+      
+      <% orderrefund.forEach(function(orders) { %>
+      <tbody>
+       
+        <td><%= orders.createdAt.toLocaleDateString() %> </td>
+        <td> <%= orders.total %></td>
+      	
+        
+      </tbody>
+      <% }); %>
+        </table>
+      
+    </div>
+  </div>
+<br><br>
+  <div class="card col">
+    <div class="card-body">
+      <h4>Wallet debited</h4>
+      
+         <table>
+          <thead>
+            <tr >
+              <th style="padding-right: 300px; ">Date</th>
+              <th>Amount</th>
+            
+          </tr>
+         
+      </thead>
+      
+      <% order_data.forEach(function(orders) { %>
+      <tbody>
+       
+        <td><%= orders.createdAt.toLocaleDateString() %></td>
+        <td><%= orders.total %></td>
+      	
+        
+      </tbody>
+      <div><a type="submit" href="/order_detail/<%= orders._id %>" class="btn btn-info">Details</a></div>
+                             
+      <% }); %>
+        </table>
+        <% if (user) { %>
+          <h4>Current Wallet: <%= user.totalWallet %></h4>
+      <% } else { %>
+          <h4>User not found or invalid.</h4>
+      <% } %>
+    </div>
+  </div>
+<br><br><br><br>
+		
+                        
+				</div>
+			</div>
+		</div>
+	</div>
+    </div>

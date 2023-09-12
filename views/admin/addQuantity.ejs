@@ -1,0 +1,59 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<div class="content-header p-5 ">
+  <div>
+    <h2 class="content-title card-title">Add Quantity</h2>
+    <p>Add, edit or Change Status</p>
+  </div>
+  <div>
+    <input type="text" placeholder="Search Product" class="form-control bg-white"/>
+  </div>
+
+  <div class="p-5 shadow mb-5 bg-white rounded">
+        
+    <form action="/addQuantity/<%= product._id %>" method="post">
+        <div class="col p-3">
+                    <select class="form-control" name="product" required>
+                        <% product.forEach((item)=> { %>
+                            <option value="<%= item._id %>">
+                                <%= item.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                    </div>
+        <div class="col p-3">
+          <input type="text" class="form-control" placeholder="Product Size" name="size"/>
+        </div>
+        <div class="col p-3">
+          <input type="text" class="form-control" placeholder="Product Price" name="productPrice"/>
+        </div>
+        <div class="col p-3">
+          <input type="text" class="form-control" placeholder="Product Stock" name="stock"/>
+        </div>
+      
+
+      <div class="d-grid align-items-center">
+        <button class="btn btn-outline-danger">ADD</button>
+        <p style="color: rgb(203, 16, 16); font-weight: bold;" class="text-center">
+            <%=(typeof message!=='undefined')?message:""%>
+             </p>
+      
+    </div>
+    </form>
+</div>
+</div>
+
+<script>
+    // Get the selected product's ObjectId
+const selectedProductId = document.getElementById("categorySelect").value;
+
+// Set the value of the "product" input field
+document.getElementById("productInput").value = selectedProductId;
+
+// Submit the form
+document.getElementById("quantityForm").submit();
+
+</script>
+    <%- include('../layout/adminFooter.ejs') %>
+
+

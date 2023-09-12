@@ -1,0 +1,232 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<!-- flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- flatpickr JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="row p-5">
+    <div class="col-md-3 p-5 shadow mb-5 bg-white rounded">
+
+        <form action="/addCoupon" method="post">
+
+            <div class="mb-4">
+                <label class="form-label">Coupon Code</label>
+                <input type="text" class="form-control" name="name" placeholder="NEWUSER10" aria-label="First name" oninput="convertToUppercase(this)">
+                <small class="form-text text-danger" id="couponCodeError"></small></div>
+        
+            <div class="mb-4">
+                <label class="form-label">Min. Purchase</label>
+                <input type="text" class="form-control" name="minPurchase" placeholder="500" aria-label="Last name">
+                <small class="form-text text-danger" id="minPurchaseError"></small>
+             </div>
+            <div class="mb-4">
+                <label class="form-label">Discount (%)</label>
+                <input type="text" class="form-control" name="discount" placeholder="10" aria-label="First name">
+                <small class="form-text text-danger" id="discountError"></small>
+               </div>
+            <div class="mb-4">
+                <label class="form-label">Description</label>
+                <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Max. Discount (₹)</label>
+                <input type="text" class="form-control" name="maxDiscount" placeholder="5000" aria-label="First name">
+                <small class="form-text text-danger" id="maxDiscountError"></small>
+              </div>
+            <div class="mb-4">
+                <label class="form-label">Select Date</label>
+                <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Expiry Date</label>
+                <input type="text" class="form-control" name="expiry" id="datepicker" placeholder="25/12/2023" required>
+                <small class="form-text text-danger" id="expiryError"></small>
+            </div>
+            <div class="d-grid col-2 mt-4 mx-auto">
+                <button class="btn btn-primary" type="submit">Add Coupon</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-9 p-3 shadow mb-5 bg-white ">
+        <div class="p-5   rounded">
+            <table class="table table-hover">
+                <thead class="table-success">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Min. Purchase</th>
+                        <th>Discount (%)</th>
+                        <th>Max. Discount</th>
+                        <th>Expiry</th>
+                        <th>Active</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+               <tbody>
+
+                
+
+                <% coupons.forEach((coupon,index)=>{ %>
+                    <tr>
+                      <td><%= index+1 %></td>
+                      <td><%= coupon.name %></td>
+                      <td>₹ <%= coupon.minPurchase %></td>
+                      <td><%= coupon.discount %></td>
+                      <td>₹ <%= coupon.maxDiscount %></td>
+                      <td><%= coupon.expiry %></td>
+                      <% if(coupon.isActive){ %>
+                        <td><i class="bx bxs-circle text-success"></i></td>
+                        <% }else{ %>
+                          <td><i class="bx bxs-circle text-danger"></i></td>
+                        <% } %>
+                        <!-- edit -->
+                            
+              
+              <td><a href="#coupenEditModal" data-bs-toggle="modal" data-bs-target="#coupenEditModal" class="text-danger"
+                data-coupon-id="<%= coupon._id %>" data-edit-url="/edit-coupon?id=<%= coupon._id %>">edit</a>
+            </td>
+            <td><a href="#modalCenter" data-bs-toggle="modal" data-bs-target="#modalCenter" class="text-danger"
+                data-coupon-id="<%= coupon._id %>">delete</i></a></td>
+
+            <div class="modal fade" id="coupenEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Coupon</h1>
+                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                        </div>
+                        <div class="modal-body">
+                          <form action="/edit-coupon" method="post" id="editCouponForm">
+                            <div class="">
+                                
+                                    <div class="col">
+                                        <label for="" class="form-label">Coupon Code</label>
+                                        <input type="text" class="form-control" id="couponCodeEdit" name="name" placeholder="NEWUSER10" aria-label="First name" oninput="convertToUppercase(this)">
+                                        <small class="form-text text-danger" id="couponCodeErrorEdit"></small>
+                                    </div>
+                                    <div class="col">
+                                        <label for="" class="form-label">Min. Purchase</label>
+                                        <input type="text" class="form-control" id="minPurchaseEdit" name="minPurchase" placeholder="500" aria-label="Last name">
+                                        <small class="form-text text-danger" id="minPurchaseErrorEdit"></small>
+                                    </div>
+                                    <div class="col">
+                                        <label for="datepicker" class="form-label">Select Date</label>
+                                        <input type="text" class="form-control" id="expiryEdit" name="expiry" id="datepicker" placeholder="25/12/2023" required>
+                                        <small class="form-text text-danger" id="expiryErrorEdit"></small>
+                                    </div>  
+                                
+                                    <div class="col ">
+                                        <label for="" class="form-label">Discount (%)</label>
+                                        <input type="text" class="form-control" id="discountEdit" name="discount" placeholder="10" aria-label="First name">
+                                        <small class="form-text text-danger" id="discountErrorEdit"></small>
+                                    </div>
+                                    <div class="col ">
+                                        <label for="" class="form-label">Max. Discount (₹)</label>
+                                        <input type="text" class="form-control" id="maxDiscountEdit" name="maxDiscount" placeholder="5000" aria-label="First name">
+                                        <input type="text" class="form-control" id="couponIdEdit" name="id" placeholder="5000" hidden>
+                                        <small class="form-text text-danger" id="maxDiscountErrorEdit"></small>
+                                    </div>
+                                    <div class="col">
+                                        <label for="" class="form-label">Active</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" name="isActive" type="checkbox" id="activeEdit" role="switch" id="flexSwitchCheckChecked" checked>
+                                        </div>
+                                        <small class="form-text" id="">Toggle to enable/disable</small>
+                                    </div>   
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="mt-3">
+                  <!-- Modal -->
+                  <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header flex-column">
+                          <div class="icon-box">
+                            <i class='bx bx-message-alt-x text-danger' style="font-size: 50px;"></i>
+                          </div>
+                          <h3 class="modal-title" id="modalCenterTitle">Are you sure?</h3>
+                        </div>
+                        <div class="modal-body text-center">
+                          <p>Do you really want to delete this Coupon?</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                          <button type="button" class="btn btn-outline-secondary mx-3" data-bs-dismiss="modal">Close</button>
+                          <a href="" id="deleteCouponButton" class="btn btn-danger">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+
+           
+                        <% }) %>          
+                                        
+                                  
+                </tbody>
+                
+                
+            </table>
+        </div>
+    </div> 
+</div> 
+
+
+<script>
+var editButtons = document.querySelectorAll('[data-bs-target="#coupenEditModal"]'); // Correct target modal ID
+editButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        var editUrl = this.getAttribute("data-edit-url");
+        $.ajax({
+            url: editUrl,
+            method: 'GET',
+            success: (response) => {
+                // Handle the AJAX response properly (check if it's JSON data)
+                console.log(response); // Ensure the data structure matches your expectations
+                document.getElementById('couponCodeEdit').value = response.name;
+                document.getElementById('minPurchaseEdit').value = response.minPurchase;
+                document.getElementById('discountEdit').value = response.discount;
+                document.getElementById('maxDiscountEdit').value = response.maxDiscount;
+                document.getElementById('expiryEdit').value = response.expiry;
+                document.getElementById('couponIdEdit').value = response._id;
+                if (!response.isActive) {
+                    document.getElementById('activeEdit').removeAttribute('checked');
+                }
+            },
+            error: (error) => {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+</script>
+
+<script>
+    // Add event listener to modal delete button
+    document.getElementById('modalCenter').addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const couponId = button.getAttribute('data-coupon-id');
+      const deleteButton = document.getElementById('deleteCouponButton');
+      deleteButton.href = `/delete-coupon/${couponId}`;
+    });
+  </script>
+
+  <script>
+    function convertToUppercase(input) {
+  input.value = input.value.toUpperCase();
+  }
+  </script>

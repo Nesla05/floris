@@ -1,0 +1,76 @@
+<%- include('../layout/header.ejs') %>
+ 
+
+
+
+<div class="d-flex justify-content-center border p-3">
+    <div class="card border-success mb-3">
+      <div class="card-header bg-transparent border-success">
+        <button type="button" id="download-button">Download</button>
+      </div>
+      <div class="card-body text-success border" id="invoice">
+        
+        <div class="invoice-title">
+            <h4>Invoice</h4><br>
+            <h5 class="pull-right">Order # <%= order_data._id.toString().slice(-8) %></h5>
+        </div>
+        <div>
+        <p class="card-text dark" >Billing Address </p>
+       
+        Name :         <%= order_data.address.name %> <br>
+        Mobile Number: <%= order_data.address.mobile %> <br>
+        Building Name: <%= order_data.address.houseName %> <br>
+        Pincode:       <%= order_data.address.pincode%> <br>
+        District:      <%= order_data.address.district %> <br>
+        State:         <%= order_data.address.state %>
+    </div> <br>
+        <div>
+            <% order_data.items.forEach(function(items,index) { %>
+            <h5>Order Summery</h5>
+            <p> Product Name : <%= items.product.name %> <br>
+                Price : <%= items.product.price %> <br>
+                Stock : <%= items.stock %> <br>
+            </p>
+            <% }) %>
+        </div> <br>
+      <div>
+        <% order_data.items.forEach(function(items,index) { %>
+        <h5>Price Details</h5>
+<p>
+    Price : <%= items.product.price %> <br>
+    delivery Charge : ₹<%= deliveryFee %> <br>
+    GST : ₹<%= gstAmount %> <br>
+    Total Price : ₹<%= order_data.total %>
+</p>
+<% }) %>
+      </div> <br>
+      <div>
+        <h5>Payment Method</h5>
+        <p><%= order_data.payment_method %></p>
+      </div>
+      </div>
+      <div class="card-footer bg-transparent border-success">Footer</div>
+    </div>
+  </div>
+  
+
+ <div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <!-- PDF AND EXCEL -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        const button = document.getElementById('download-button');
+    
+        function generatePDF() {
+            // Choose the element that your content will be rendered to.
+            const element = document.getElementById('invoice');
+            // Choose the element and save the PDF for your user.
+            html2pdf().from(element).save();
+        }
+    
+        button.addEventListener('click', generatePDF);
+    
+       
+    </script>

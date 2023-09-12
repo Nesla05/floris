@@ -1,0 +1,275 @@
+<%- include('../layout/header.ejs') %>
+
+
+<div class="py-1 bg-black">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+	    		<div class="col-lg-12 d-block">
+		    		<div class="row d-flex">
+		    			<div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+						    <span class="text">+ 1235 2355 98</span>
+					    </div>
+					    <div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+						    <span class="text">youremail@email.com</span>
+					    </div>
+					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container"> <div class="logo">
+        <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+      </div>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+	          <!-- <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+              	<a class="dropdown-item" href="shop.html">Shop</a>
+                <a class="dropdown-item" href="product-single.html">Single Product</a>
+                <a class="dropdown-item" href="cart.html">Cart</a>
+                <a class="dropdown-item" href="checkout.html">Checkout</a>
+              </div>
+            </li> -->
+	          <li class="nav-item"><a href="" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cartt" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Checkout</span></p>
+            <h1 class="mb-0 bread">Checkout</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+        
+          <div class="col-md-6">
+            <div class="cart-detail bg-light p-3 p-md-4">
+              <h3 class="billing-heading mb-4">Your Address</h3>
+              <% if (address && address.length > 0) { %>
+                <% address.forEach((addressItem) => { %>
+                  <div class="form-group d-flex justify-content-between align-items-start">
+                    <div class="address-details">
+                      <h6 class="my-0 text-muted">
+                        <%= addressItem.name %> <br>
+                        <%= addressItem.mobile %> <br>
+                        <%= addressItem.email %> <br>
+                        <%= addressItem.district %> <br>
+                        <%= addressItem.state %> <br>
+                        <%= addressItem.pincode %> <br>
+                      </h6>
+                    </div>
+                    <div class="delivery-button">
+                      <p><a href="/payment?id=<%= addressItem._id %>" class="btn btn-primary py-3 px-4">Deliver Here</a></p>
+                    </div>
+                  </div>
+                  <hr><hr>
+                <% } )%>
+              <% } %>
+            </div>
+            <a  data-toggle="modal" data-target="#add-address" style="cursor: pointer">
+              
+                <i class="fa-solid fa-plus" style="color: #89898b"></i> Add New
+                      Address
+            
+         </a>
+          </div>
+          
+        
+        
+          <div class="col-md-6">
+            <div class="cart-detail cart-total bg-light p-3 p-md-4">
+              <h3 class="billing-heading mb-4">Cart Total</h3>
+              <p class="d-flex">
+                <% let totalPrices = 0; %> <% products.forEach(product => {
+                  %> <% totalPrices += product.productId.price *
+                  product.stock; %> 
+                  <% }); %>
+                <span>Subtotal</span>
+                <span> <%= totalPrices.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+              </p>
+              </p>
+              
+              <p class="d-flex">
+                <span>Delivery</span>
+                <%= deliveryFee %>
+                </p>
+              
+              <p class="d-flex">
+                <span>GST</span>
+                <%= gstAmount %>
+             </p>
+              
+              <hr>
+              <p class="d-flex total-price">
+                <% let totalPrice = 0; %> 
+                <% products.forEach(product => {
+                  %> <% totalPrice += product.productId.price *
+                  product.stock; %> <% }); %>
+                  
+    						<span>Total</span>
+                <%= totalPrice %>
+                  
+              
+              </p>
+            </div>
+          </div>
+        
+        </div> <!-- .row -->
+      </div> <!-- .container -->
+
+
+   
+                
+  
+   <div class="modal fade" id="add-address" role="dialog">
+    <div class="modal-dialog">
+      <form action="/addAddress" method="POST"  class="form" role="form" autocomplete="off">
+      <div class="modal-body">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      placeholder=""
+                      value=""
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="mobile">Mobile</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mobile"
+                      name="mobile"
+                      placeholder=""
+                      value=""
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="email"
+                    >Email
+                    <span class="text-muted">(Optional)</span></label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="address">Address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="houseName"
+                    placeholder="1234 Main St"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  <div class="mb-3 col">
+                    <label for="pincode"
+                      >Pincode<span class="text-muted"></span
+                    ></label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="pincode"
+                      placeholder="Apartment or suite"
+                    />
+                  </div>
+                  <div class="col mb-3">
+                    <label for="state">State</label>
+                    <select
+                      class="custom-select d-block w-100"
+                      name="state"
+                      required
+                    >
+                      <option value="">Choose...</option>
+                      <option>Kerala</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col mb-3">
+                    <label for="district">District</label>
+                    <select
+                      class="custom-select d-block w-100"
+                      name="district"
+                      required
+                    >
+                      <option value="">Choose...</option>
+                      <option>Thrissur</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Save changes
+                </button>
+    
+              
+                  
+                </div>
+
+               
+              </div>
+          </div>
+        </div>
+      </div>
+        </form>
+        </div>
+    </section>
+    
+<script>
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+</script>
+
+<%- include('../layout/footer.ejs') %>

@@ -1,0 +1,188 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<style>
+  body {
+    overflow: hidden;
+  }
+  .variant p {
+    margin-bottom: 5px;
+  }
+  /* Add the following CSS rule */
+  .variant-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+  /* Style the table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+</style>
+
+<div class="col p-5">
+  <div class="mb-5 p-5 shadow mb-5 bg-white rounded">
+    <% product.forEach((product, index) => { %>
+      <% if (product && product.product && product.product.images && product.product.images[0]) { %>
+        <div class="quantity-wrapper">
+          <div class="item-container bg-white p-3 mt-3 d-flex align-items-center gap-5">
+            <div class="col-2 d-flex gap-5 align-items-center">
+              <img src="/uploads/<%= product.product.images[0] %>" alt="" style="width: 100px;">
+            </div>
+            <div class="d-flex flex-row">
+              <div class="col-4">
+                <h6 class="font-weight-bold">ProductName </h6>
+                <%= product.product.name %>
+              </div>
+              <div class="col-4">
+                <h6 class="font-weight-bold" >ProductBrand</h6>
+                <%= product.product.brand %>
+              </div>
+              <div class="col-4">
+                <h6 class="font-weight-bold" >Category</h6>
+                <%= getCategoryName(product.product.category) %>
+              </div>
+            </div>
+            <div class="col-2">
+              <!-- Add buttons or other actions here -->
+            </div>
+          </div>
+          <div class="bg-white">
+            <table>
+              <tr>
+                <th>Size</th>
+                <th>Product Price</th>
+                <th>Stock</th>
+                <th>Edit</th>
+              </tr>
+              <% if (product.quantities.length > 0) { %>
+                <% product.quantities.forEach(function(quantity) { %>
+                  <tr>
+                    <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       <%= quantity.size %>
+                    <td>
+                      <% if (quantity.productPrice !== undefined && quantity.productPrice !== null) { %>
+                        <%= quantity.productPrice.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %>
+                      <% } else { %>
+                        <!-- Product Price not available -->
+                      <% } %>
+                      </td>
+                  <td>
+                      Stock: <%= quantity.stock %>
+                    </td>
+                    <td>
+                      <button class="btn  me-2 edit-btns" data-productId="<%= product._id %>" data-quantityId="<%= quantity._id %>" data-bs-toggle="modal" data-bs-target="#editQuantityModal">
+                        <i class="fa-solid fa-pen" style="color: #292929;"></i>
+                      </button>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="4">No quantities available for this product.</td>
+                </tr>
+              <% } %>
+            </table>
+          </div>
+        </div>
+      <% } %>
+    <% }) %>
+  </div>
+</div>
+
+<div class="modal fade" id="editQuantityModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <!-- ... -->
+    <!-- Rest of the modal code as provided in the original code -->
+    <!-- ... -->
+  </div>
+</div>
+  
+  <script>
+  
+  // Function to Edit the variants
+  const editBtns = document.querySelectorAll('.edit-btns');
+  editBtns.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const productId = event.target.getAttribute('data-productId');
+      const quantityId = event.target.getAttribute('data-quantityId');
+      
+      $.ajax({
+        url: `/editQuantity/${productId}/${quantityId}`,
+        method: 'get',
+        success: (response) => {
+          console.log(response);
+          document.getElementById('productPrice').value = response.quantities[0].productPrice;
+          document.getElementById('stock').value = response.quantities[0].stock;
+          document.getElementById('productId').value = response.product;
+          document.getElementById('quantityId').value = quantityId;
+
+          // Show the editQuantityModal
+          const editQuantityModal = new bootstrap.Modal(document.getElementById('editQuantityModal'));
+          editQuantityModal.show();
+        },
+        error: (err) => {
+          console.error('Error fetching variant data:', err);
+        }
+      });
+    });
+  });
+
+  // Function to handle form submission and update the variant
+  const editQuantityForm = document.getElementById('editQuantityForm');
+  editQuantityForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    $.ajax({
+      url: '/editQuantity',
+      method: 'put',
+      data: $('#editQuantityForm').serialize(),
+      success: (response) => {
+        if (response.status) {
+          // Variant updated successfully, you can do any necessary action here
+          // For example, you can reload the page after successful update:
+          location.reload();
+        } else {
+          // Handle the case when the variant update was not successful
+          console.error('Failed to update variant:', response.error);
+        }
+      },
+      error: (err) => {
+        console.error('Error updating variant:', err);
+      }
+    });
+  });
+
+
+
+  
+    //Function to Delete the variants
+    // const deleteBtns = document.querySelectorAll('.delete-btns')
+    // deleteBtns.forEach((button)=>{
+    //   button.addEventListener('click',(event)=>{
+    //     var productId = event.target.getAttribute('data-productId')
+    //     var variantId = event.target.getAttribute('data-variantId')
+    //     $.ajax({
+    //       url:'/admin-panel/delete-variant',
+    //       method:'delete',
+    //       data:{productId,variantId},
+    //       success:(response)=>{
+    //         if(response.status){
+    //           location.reload()
+    //         }
+    //       }
+    //     })
+    //   })
+    // })
+  </script>
+  
+  
+
+<%- include('../layout/adminFooter.ejs') %>

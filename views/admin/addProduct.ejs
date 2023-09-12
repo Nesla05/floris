@@ -1,0 +1,102 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+<section>
+
+   
+    <div class="card"> 
+        <!-- <div class="card-body"> -->
+       
+                <div class=" p-5 shadow mb-5 bg-white rounded">
+
+                    <form action="/addProduct" method="post" enctype="multipart/form-data">
+                        <div>
+                            <div class="col-md-9">
+                                <h6>1. General info</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="mb-4">
+                                    <label class="form-label">Product title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="name">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Type</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="type"></textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category">
+                                        <% category.forEach(function(category) { %>
+                                            <% if(category.isListed) { %>
+                                            <option value="<%=category._id%>" ><%= category.name %></option>
+                                            <% } %>
+                                        <% }); %>
+                                       
+                                    </select>
+                                    <!-- <textarea placeholder="Type here" class="form-control" rows="4" name="description"></textarea> -->
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Brand</label>
+                                    <input type="text"  class="form-control" name="brand">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number"  class="form-control" name="stock">
+                                </div>
+                              
+                                
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        <hr class="mb-4 mt-0">
+
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Orginal Price</label>
+                                <input type="text" placeholder="₹00.0" class="form-control" name="orginalPrice">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h6>2. Pricing</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="mb-4">
+                                    <label class="form-label">Cost in INR</label>
+                                    <input type="text" placeholder="₹00.0" class="form-control" name="price">
+                                </div>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        
+                        <hr class="mb-4 mt-0">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h6>3. Media</h6>
+                            </div>
+                            <div class="col-md-25">
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Image</label>
+                                    <input class="form-control"  multiple type="file" name="images">
+                                </div>
+                               
+                            </div> 
+                    </div>
+                        <div class="d-grid">
+                            <button class="btn btn-outline-danger">Create Product</button>
+                            <p style="color: rgb(203, 16, 16); font-weight: bold;" class="text-center">
+                                <%=(typeof message!=='undefined')?message:""%>
+                                 </p>
+                          
+                        </div>
+                    </form>
+
+                </div>
+</section>
+
+<%- include('../layout/adminFooter.ejs') %>

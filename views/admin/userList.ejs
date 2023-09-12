@@ -1,0 +1,65 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+
+
+
+<div class="row" style="padding-left: 50px; padding-top: 20px;">
+  <div class="col-md-12">
+    <h3 class="content-title card-title">User List </h3>
+    <div class="card">
+     
+      <!-- <div class="table-responsive pt-3"> -->
+        <div class="" style="margin: 50px;">
+          <table class="table table-hover table-bordered">
+              <thead class="table-info">
+                  <tr>
+                      
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Mobile No</th>
+                      
+                      <th scope="col">Action</th>
+                      <th scope="col">Block/Unblock</th>
+                      
+                  </tr>
+              </thead>
+              <tbody>
+                <% user.forEach((user) => { %>
+                  <tr>
+                    <td><%= user.name %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.mobile %></td>
+                   
+              
+                    <% if (user.is_blocked == false) { %>
+                      <td><span style="color: green;">Active</span></td>
+                    <% } else { %>
+                      <td><span style="color: red;">Blocked</span></td>
+                    <% } %>
+              
+                    <td>
+                      <div>
+                        <% if (user.is_blocked == false) { %> 
+                          <a class="dropdown-item" href="/blockUser?id=<%= user._id %>">
+                            <i class="bx bx-trash me-1"></i> Block
+                          </a>
+                        <% } else { %> 
+                          <a class="dropdown-item" href="unblockUser?id=<%= user._id %>">
+                            <i class="bx bx-trash me-1"></i> Unblock 
+                          </a>
+                        <% } %>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+              
+          </table>
+          </div>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<%- include('../layout/adminFooter.ejs') %>

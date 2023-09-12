@@ -1,0 +1,191 @@
+<%- include('../layout/header.ejs') %>
+
+<div class="py-1 bg-black">
+  <div class="container">
+    <div
+      class="row no-gutters d-flex align-items-start align-items-center px-md-0"
+    >
+      <div class="col-lg-12 d-block">
+        <div class="row d-flex">
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div
+              class="icon mr-2 d-flex justify-content-center align-items-center"
+            >
+              <span class="icon-phone2"></span>
+            </div>
+            <span class="text">+ 1235 2355 98</span>
+          </div>
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div
+              class="icon mr-2 d-flex justify-content-center align-items-center"
+            >
+              <span class="icon-paper-plane"></span>
+            </div>
+            <span class="text">youremail@email.com</span>
+          </div>
+          <div
+            class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right"
+          >
+            <span class="text"
+              >3-5 Business days delivery &amp; Free Returns</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav
+
+  class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+  id="ftco-navbar"
+>
+<br><br>
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#ftco-nav"
+      aria-controls="ftco-nav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="oi oi-menu"></span> Menu
+    </button>
+
+    <div class="collapse navbar-collapse" id="ftco-nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+       
+        <li class="nav-item">
+          <a href="" class="nav-link">About</a>
+        </li>
+        <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
+        <li class="nav-item">
+          <a href="" class="nav-link">Contact</a>
+        </li>
+        <li class="nav-item cta cta-colored">
+          <a href="cartt" class="nav-link"
+            ><span class="icon-shopping_cart"></span>[0]</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section style="background-color: #eee">
+  <br><br>
+  <div class="container">
+   
+      <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+   
+    <div class="row">
+      <div class="col-lg-4">
+        <ul class="list-group">
+          <li class="list-group-item py-1">
+            <a href="/profile-address" class="text-reset">Address</a>
+          </li>
+          <li class="list-group-item py-1">
+            <a href="/user-order?id=<%= user._id %>" class="text-reset"
+              >Order Details</a
+            >
+          </li>
+          <li class="list-group-item py-1">
+            <a href="/wallet" class="text-reset"
+              >Wallet</a
+            >
+          </li>
+          <li class="list-group-item py-1">
+            <a href="/logout" class="fw-bold text-body text-decoration-none"
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="card col-lg-8 mb-2">
+        <br />
+        <div class="d-flex justify-content-end">
+          <!-- Content here -->
+        </div>
+        <div class="mb-4 p-5">
+          <br />
+
+          <div class="card mb-4">
+            <div
+              class="card-body d-flex flex-row justify-content-between align-items-start"
+            >
+              <div>
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                  alt="avatar"
+                  class="rounded-circle img-fluid"
+                  style="width: 150px"
+                />
+              </div>
+              <div>
+                <h5 class="my-3"><%= user.name %></h5>
+                <p class="text-muted mb-1"><%= user.email %></p>
+                <p class="text-muted mb-1"><%= user.mobile %></p>
+              </div>
+              <div class="d-flex justify-content-center mb-2">
+                <a
+                  data-toggle="modal"
+                  data-target="#add-address"
+                  style="cursor: pointer"
+                >
+                  <i class="fas fa-pen me-2" style="color: #89898b"></i>
+                </a>
+                <div class="modal fade" id="add-address" role="dialog">
+                  <div class="modal-dialog">
+                    <form
+                      action="edit-user"
+                      method="POST"
+                      class="form"
+                      role="form"
+                      autocomplete="off"
+                    >
+                      <div class="modal-body">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <label for="name">Name</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="name"
+                                name="name"
+                                placeholder=""
+                                value="<%=user.name%>"
+                                required
+                              />
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                              >
+                                Close
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Save changes
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../layout/footer.ejs') %>

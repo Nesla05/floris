@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+
+  <link rel="stylesheet" href="../../vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css"> 
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+	<link rel="stylesheet" href="../admin/template/admincss/vertical-layout-light/style.css"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"></script>
+
+  <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="vendors/chart.js/Chart.min.js"></script>
+  <script src="js/off-canvas.js"></script>
+  <script src="js/hoverable-collapse.js"></script>
+  <script src="js/template.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/todolist.js"></script>
+  <script src="js/dashboard.js"></script>
+
+  <script src="https://kit.fontawesome.com/2879fa132c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-light bg-light justify-content-between">
+    <a class="navbar-brand">Navbar</a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <a href="adminLogout" class="btn btn-dark" style="margin-right: 100px;" role="button">Logout</a>
+    </form>
+  </nav>
+
+
+  <div class="d-flex flex-row">
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
+
+           <ul id="collapseExample1" class="collapse show list-group list-group-flush">
+            <li class="list-group-item py-1">
+              <a href="/dashboard" class="text-reset">Dashboard</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/salesReport" class="text-reset">Sales Report</a>
+            </li>
+            <li class="list-group-item py-1">
+              <a href="/banner" class="text-reset">Banner</a>
+            </li>
+          <li class="list-group-item py-1 ">
+            <a href="/loadUser" class="text-reset ">User List</a>
+          </li>
+       
+          <li class="list-group-item py-1">
+            <a  href="/loadCategory" class="text-reset">Category List</a>
+          </li>
+        
+          <li class="list-group-item py-1">
+            <a href="/loadproductList" class="text-reset">Product List</a>
+          </li>
+
+          <li class="list-group-item py-1">
+            <a href="/addQuantity" class="text-reset">Add Quantity</a>
+          </li>
+
+          <!-- <li class="list-group-item py-1">
+            <a href="/quantity" class="text-reset">Product Quantity</a>
+          </li> -->
+
+          <li class="list-group-item py-1">
+            <a href="/order" class="text-reset">Order Details</a>
+          </li>
+        </ul>
+      
+    </nav>
+
+   
+   
+
+  
+    

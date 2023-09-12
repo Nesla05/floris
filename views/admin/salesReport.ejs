@@ -1,0 +1,138 @@
+<%- include('../layout/adminHeader.ejs') %>
+
+        <!-- Recent Sales Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="card-header bg-transparent border-success">
+                <button type="button" id="download-button">Download</button>
+              </div>
+            <div class=" text-center rounded p-4" >
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Recent Salse</h6>
+                    <div>
+                        <form action="/filterSalesReport" method="post">
+                        <input class="filterdate" name="preDate" value="<%= preDate %>" type="date">
+                        <input class="filterdate" name="postDate" value="<%= postDate %>" type="date">
+                        <button type="submit" class="btn btn-darkrs">Filter</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="salesReport">
+                <div class="table-responsive" id="salesexcel">
+                    <br>
+                    <h4>SALES REPORT</h4><br>
+                    <br>
+                    <table id="orderTable" class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                            
+                            <tr class="text-dark">
+                                <th scope="col">NO</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Products</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (locals.order_data) { %>
+                            <% order_data.forEach(function(orders,index) { %>
+                            <tr class="blackcolor">
+                                <td><%= index+1 %></td>
+                                <td><%= orders.user.name %></td>
+                                <td><%= orders.createdAt.toLocaleDateString() %></td>
+                                <td>
+                                    <div class="order_pro">
+                                        <% orders.items.forEach((items) =>{ %>
+                                           <ul>
+                                            <li style="list-style: none;"><%= items.stock %></li>
+                                               
+                                           </ul>  
+                                        <% }) %>
+                                   </div>
+                                </td>
+                                <td>
+                                    <% orders.items.forEach((items) =>{ %>
+                                        <ul>
+                                            <li><%= items.product.name %></li>
+                                        </ul>
+                                         
+                                    <% }) %>
+                                </td>
+                                <td>
+                                    ₹<%= orders.total%>
+                               </td>
+                               <td><%= orders.status%></td>
+                            </tr>
+                            <% }) %>
+                            <% } %>	
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Recent Sales End -->
+</div>
+</div>
+
+
+
+<script>
+
+
+$(document).ready(function () {
+$('#orderTable').DataTable({
+dom: 'Bfrtip', // Add export buttons to table wrapper
+buttons: [
+'copy', 'csv',
+{
+extend: 'excelHtml5',
+text: 'Export to Excel',
+filename: 'table-data',
+exportOptions: {
+  columns: ':visible'
+},
+title: null,
+messageTop: null,
+messageBottom: null,
+className: 'btn btn-primary'
+},
+{
+extend: 'pdfHtml5',
+text: 'Export to PDF',
+filename: 'table-data',
+exportOptions: {
+  columns: ':visible'
+},
+title: null,
+messageTop: null,
+messageBottom: null,
+className: 'btn btn-primary'
+},
+'print' // Add desired export buttons
+]
+});
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<!-- PDF AND EXCEL -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script>
+    const button = document.getElementById('download-button');
+
+    function generatePDF() {
+        // Choose the element that your content will be rendered to.
+        const element = document.getElementById('salesReport');
+        // Choose the element and save the PDF for your user.
+        html2pdf().from(element).save();
+    }
+
+    button.addEventListener('click', generatePDF);
+
+   
+</script>
+
+<%- include('../layout/adminFooter.ejs') %>

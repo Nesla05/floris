@@ -1,0 +1,246 @@
+<%- include('../layout/header.ejs') %>
+
+<body class="goto-here">
+  <div class="py-1 bg-black">
+    <div class="container">
+      <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+        <div class="col-lg-12 d-block">
+          <div class="row d-flex">
+            <div class="col-md pr-4 d-flex topper align-items-center">
+              <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+              <span class="text">+ 1235 2355 98</span>
+            </div>
+            <div class="col-md pr-4 d-flex topper align-items-center">
+              <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+              <span class="text">youremail@email.com</span>
+            </div>
+            <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+              <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+      <div class="logo">
+      <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+    </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="showProduct" class="nav-link">shop</a></li>
+         
+          <li class="nav-item"><a href="" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
+          <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
+      
+        <li class="nav-item cta cta-colored"><a href="/profile"class="nav-link">Profile</a></li>
+        <li class="nav-item cta cta-colored"><a href="/cartt" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+       
+        
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+<br><br><br><br><br>
+<div class="d-flex justify-content-center " > <!-- Center-align the container -->
+  <div class="card mb-3 d-flex flex-col" style="width: 700px; margin-top: 10px; ">
+    <% order_data.items.forEach(function(item, index) { %>
+      <div class="card mb-3 d-inline-block text-center "> 
+        <a href="" class="image-popup">
+          <img src="/uploads/<%= item.product.images[0] %>" id="main_product_image" class="img-fluid" alt="Colorlib Template" style="width: 200px;">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title"><%= item.product.name %></h5>
+          <h5 class="card-title"><%= item.product.type %></h5>
+          <h5 class="card-title text-muted">Stock: <%= item.stock %></h5>
+          <div class="status p-1" style="background-color: rgb(88, 171, 150);">
+            <h5 style="color: aliceblue;"><%= order_data.status %> </h5>
+          </div>
+          <br>
+          <div>
+            <% if(!item.product.rating){ %>
+              <% if(order_data.status === 'Delivered' || order_data.status === 'retrun' || order_data.status === 'Refund') {%>
+              <p style="cursor: pointer;" class="text-primary addReviewBtn" data-bs-toggle="modal" data-bs-target="#reviewModal"
+              
+               data-orderId="<%= item.product._id %>" data-productId="<%=  item.product.productId %>" >Write a review</p>
+               <% } %>
+              <% }else{ %>
+                  <h5 class="fw-bold mb-2 text-success"><%=  item.product.status %></h5>
+                  <% } %>
+          </div>
+          <div>
+            <a href="/invoice?id=<%= order_data._id %>" class="btn btn-danger">Download Invoice</a>
+        </div>
+        </div>
+      </div>
+      <br>
+      <div class="card-body  p-3" style="background-color: rgb(231, 230, 230);">
+        <h5 class="card-title">Shipping Address</h5>
+        <p class="card-text text-dark"><%= order_data.address.name %> | <%= order_data.address.mobile %></p>
+        <p><%= order_data.address.houseName %> , <%= order_data.address.district %>,
+          <%= order_data.address.district %>, <%= order_data.address.state %></p>
+      </div>
+      <br>
+      <div class="card-body" style="background-color: rgb(231, 230, 230);">
+        <h5 class="card-title">Total Order Place</h5>
+        <p class="card-text">₹<%= order_data.total %></p>
+        <p>Pain By  <%= order_data.payment_method %> </p>
+      </div>
+      <input type="text" id="orderId" value="<%= item.product._id %>" hidden>
+      <input type="text" id="itemId" value="<%= item.product.item %>" hidden>
+      <input type="text" id="stock" value="<%= item.product.stock %>" hidden>
+
+      <% if(item.product.rating){ %>
+        <hr style="background-color: #000;">
+    <div class="mt-3 d-flex justify-content-between px-4">
+        <div class="col">
+            <h6>Rating : </h6>
+            <div class="rating-stars">
+                <% for(let i=0;i<item.product.rating;i++){ %>
+                    <span class="star selected" data-star-index="1"><i class="fa-solid fa-star"></i></span>
+                <% } %>
+            </div>
+        </div>
+        <div class="col-7 me-2 ">
+            <h6 class="mb-1">Review : </h6>
+            <h6><%= item.product.review %></h6>
+        </div>
+        
+    </div>
+    <% } %>
+    <% }) %> 
+</div>
+
+
+   
+  </div>
+</div>
+
+
+
+
+<!-- Add Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<style>
+  .add-rating-stars {
+display: inline-block;
+}
+
+.star {
+font-size: 24px;
+cursor: pointer;
+color: #ccc;
+}
+
+.star:hover{
+color: #ffcc00;
+}
+
+.selected {
+color: #ffcc00;
+}
+
+</style>
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="exampleModalLabel">Rating & Review</h1>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form action="" id="ratingForm">
+    <label for="exampleFormControlTextarea1" class="form-label">Please rate the product <span class="text-danger">*</span></label>
+    <div class="mb-3">
+        <div class="add-rating-stars">
+            <span class="add-star" data-star-index="1"><i class="fa-solid fa-star"></i></span>
+            <span class="add-star" data-star-index="2"><i class="fa-solid fa-star"></i></span>
+            <span class="add-star" data-star-index="3"><i class="fa-solid fa-star"></i></span>
+            <span class="add-star" data-star-index="4"><i class="fa-solid fa-star"></i></span>
+            <span class="add-star" data-star-index="5"><i class="fa-solid fa-star"></i></span>
+          </div>
+          <input type="text" hidden  name="rating" id="productRatingReview">
+          <input type="text" hidden name="productId" id="productIdReview" >
+          <!-- <input type="text" hidden name="cartItem" id="cartItemReview"> -->
+          <input type="text" hidden name="orderId" id="orderIdReview">
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Product review</label>
+        <textarea class="form-control" id="" rows="3" name="review"></textarea>
+      </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+<script>
+    const addReviewBtns = document.querySelectorAll('.addReviewBtn')
+    addReviewBtns.forEach(function(button){
+        button.addEventListener('click',function(){
+            document.getElementById('orderIdReview').value = this.getAttribute('data-orderid');
+            document.getElementById('productIdReview').value = this.getAttribute('data-productid');
+            // document.getElementById('cartItemReview').value = this.getAttribute('data-cartitem');
+        })
+    })
+    
+    const addStars = document.querySelectorAll('.add-star');
+    let rating = document.getElementById('productRatingReview')
+    const orderIdReview = document.getElementById('orderIdReview').value
+    // const cartItemReview = document.getElementById('cartItemReview').value
+    const productIdReview = document.getElementById('productIdReview').value
+   
+addStars.forEach(star => {
+star.addEventListener('click', () => {
+    const selectedStarIndex = star.getAttribute('data-star-index');
+
+    // Remove 'selected' class from all stars
+    addStars.forEach(star => star.classList.remove('selected'));
+
+    // Add 'selected' class to stars up to the selected index
+    for (let i = 0; i < selectedStarIndex; i++) {
+    addStars[i].classList.add('selected');
+    }
+
+    // Store the selected rating value or perform further actions
+    rating.value = selectedStarIndex;
+    console.log('Selected rating:', rating.value);
+});
+});
+
+$('#ratingForm').submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/user-orderDetails/add-review',
+        method:'post',
+        data:$('#ratingForm').serialize(),
+        success:(response)=>{
+            if(response.status){
+                location.reload()
+            }
+        }
+    })
+})
+
+</script>
+
+
+
+
+
+
+
+
+
+

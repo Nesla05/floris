@@ -1,0 +1,457 @@
+<%- include('../layout/header.ejs') %>
+
+<div class="py-1 bg-black">
+  <div class="container">
+    
+    <div
+      class="row no-gutters d-flex align-items-start align-items-center px-md-0"
+    >
+      <div class="col-lg-12 d-block">
+        <div class="row d-flex">
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div
+              class="icon mr-2 d-flex justify-content-center align-items-center"
+            >
+              <span class="icon-phone2"></span>
+            </div>
+            <span class="text">+ 1235 2355 98</span>
+          </div>
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div
+              class="icon mr-2 d-flex justify-content-center align-items-center"
+            >
+              <span class="icon-paper-plane"></span>
+            </div>
+            <span class="text">youremail@email.com</span>
+          </div>
+          <div
+            class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right"
+          >
+            <span class="text"
+              >3-5 Business days delivery &amp; Free Returns</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav
+
+  class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+  id="ftco-navbar"
+>
+<br><br>
+  <div class="container">
+    <div class="logo">
+      <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#ftco-nav"
+      aria-controls="ftco-nav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="oi oi-menu"></span> Menu
+    </button>
+
+    <div class="collapse navbar-collapse" id="ftco-nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+        
+        <li class="nav-item">
+          <a href="" class="nav-link">About</a>
+        </li>
+        <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
+        <li class="nav-item">
+          <a href="" class="nav-link">Contact</a>
+        </li>
+        <li class="nav-item cta cta-colored">
+          <a href="cartt" class="nav-link"
+            ><span class="icon-shopping_cart"></span>[0]</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section style="background-color: #eee">
+  <br><br>
+  <div class="container py-5">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 100px;">
+            <h5 class="my-3"> <%= user.name %></h5>
+            <p class="text-muted mb-1"><%= user.email %></p>
+            
+            <div class="d-flex justify-content-center mb-2">
+              <!-- <button type="button" class="btn btn-primary">Follow</button> -->
+             
+            
+              <!-- <button type="button" class="btn btn-outline-primary ms-1">Logout</button> -->
+            </div>
+     
+          </div>
+        </div>
+        <li class="list-group-item py-1">
+          <a href="/profile-address" class="text-reset"> Address</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/user-order?id=<%= user._id %>" class="text-reset"> Order Details</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/user-order?id=<%= user._id %>" class="text-reset"> Order Details</a>
+        </li>
+        <li class="list-group-item py-1">
+          <a href="/logout" class="text-reset">Logout</a>
+        </li>
+        <div class="card mb-4 mb-lg-0">
+          
+        </div>
+      </div>
+      <div class="card col-lg-8 mb-2">
+        <br />
+        <div class="d-flex justify-content-end">
+          <!-- Content here -->
+        </div>
+        <div class="mb-4 p-5">
+          <br />
+
+          <div class="card mb-4">
+            <div class="card-body d-flex flex-row justify-content-between align-items-start" >
+              <div class="col-md-12">
+                <div class="cart-detail p-3">
+                  <div class="cart-detail p-3 p-md-4 col-md-12">
+                    <h3 class="billing-heading mb-4">Your Address</h3>
+                
+                    <% 
+                    for (let i = 0; i < user.deliveryAddress.length; i++) {
+                        const addressItem = user.deliveryAddress[i];
+                        if (i % 2 === 0) { %>
+                            <div class="row">
+                        <% } %>
+                        <div class="col-md-12 ">
+                            <div class="form-group border bg-light p-4 d-flex flex-row justify-content-between align-items-start">
+                                <div class="address-details">
+                                    <h6 class="my-0 text-muted">
+                                        <%= addressItem.name %> <br>
+                                        <%= addressItem.mobile %> <br>
+                                        <%= addressItem.email %> <br>
+                                        <%= addressItem.district %> <br>
+                                        <%= addressItem.state %> <br>
+                                        <%= addressItem.pincode %> <br>
+                                    </h6>
+                                  </div>
+                                  <div>
+                                  <a href="/profile-delete-address?id=<%=addressItem._id %>">
+                                    <i class="fa-solid fa-trash" style="color: #262627"></i> </a
+                                  >
+                                  <a
+                    data-toggle="modal"
+                    data-target="#profile-edit-address<%=addressItem._id %>"
+                  >
+                    <i
+                      class="fa-regular fa-pen-to-square"
+                      style="color: #000000"
+                    ></i>
+                  </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% if (i % 2 !== 0 || i === user.deliveryAddress.length - 1) { %>
+                            </div>
+                        
+                        <% } %>
+                        
+    
+                        <div class="modal fade" id="profile-edit-address<%=addressItem._id %>" tabindex="-1" role="dialog" aria-labelledby="#profile-edit-address" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                              <h5 class="modal-title" id="profile-edit-address">
+                                Edit Address
+                              </h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <div class="modal-body">
+                              <form id="edit-address" action="/profile-edit-address?id=<%=addressItem._id%>" method="POST">
+                                <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+           
+            placeholder=""
+            value="<%= addressItem.name %>"
+           
+          />
+    
+                                <label for="mobile">Mobile</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="mobile"
+                              name="mobile"
+                              placeholder=""
+                              value="<%= addressItem.mobile %>"
+                              
+                            />
+
+                            <label for="email">Email</label>
+                            <input
+                              type="email"
+                              class="form-control"
+                              name="email"
+                              
+                              value="<%= addressItem.email %>"
+                            />
+
+                            <label for="address">Address</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="houseName"
+                              
+                              value="<%= addressItem.houseName %>"
+                              
+                            />
+
+                            <label for="pincode">Pincode</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="pincode"
+                              
+                              value="<%= addressItem.pincode %>"
+                            />
+
+                            <label for="state">State</label>
+                            <input
+                              type="text"
+                              class="custom-select d-block w-100"
+                              name="state"
+                             
+                              value="<%= addressItem.state %>"
+                            />
+
+                            <label for="district">District</label>
+                            <input
+                              type="text"
+                              class="custom-select d-block w-100"
+                              name="district"
+                             
+                              value="<%= addressItem.district %>"
+                            />
+    
+                                <div class="modal-footer">
+                                  <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                  >
+                                    Close
+                                  </button>
+                                  <button type="submit" class="btn btn-primary">
+                                    Save changes
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </div>
+                  <% } %>
+    
+                   
+                </div>
+                <a  data-toggle="modal" data-target="#profile-add-address" style="cursor: pointer">
+              
+                  <i class="fa-solid fa-plus" style="color: #89898b"></i> Add New
+                        Address
+              
+           </a>
+
+           <div class="modal fade" id="profile-add-address" role="dialog">
+            <div class="modal-dialog">
+              <form action="/profile-add-address" method="POST"  class="form" role="form" autocomplete="off">
+              <div class="modal-body">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="name">Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="name"
+                              name="name"
+                              placeholder=""
+                              value=""
+                              required
+                            />
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="mobile">Mobile</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="mobile"
+                              name="mobile"
+                              placeholder=""
+                              value=""
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="email"
+                            >Email
+                            <span class="text-muted">(Optional)</span></label
+                          >
+                          <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            placeholder="you@example.com"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="address">Address</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="houseName"
+                            placeholder="1234 Main St"
+                            required
+                          />
+                        </div>
+                        <div class="row">
+                          <div class="mb-3 col">
+                            <label for="pincode"
+                              >Pincode<span class="text-muted"></span
+                            ></label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="pincode"
+                              placeholder="Apartment or suite"
+                            />
+                          </div>
+                          <div class="col mb-3">
+                            <label for="state">State</label>
+                            <select
+                              class="custom-select d-block w-100"
+                              name="state"
+                              required
+                            >
+                              <option value="">Choose...</option>
+                              <option>Kerala</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col mb-3">
+                            <label for="district">District</label>
+                            <select
+                              class="custom-select d-block w-100"
+                              name="district"
+                              required
+                            >
+                              <option value="">Choose...</option>
+                              <option>Thrissur</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Save changes
+                        </button>
+            
+                      
+                          
+                        </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+$(document).ready(function() {
+  
+  $('#edit-address-form').submit(function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this);
+    const name = formData.get('name');
+    const mobile = formData.get('mobile');
+    const email = formData.get('email');
+    const houseName = formData.get('houseName');
+    const district = formData.get('district');
+    const pincode = formData.get('pincode');
+    const state = formData.get('state');
+    if (name.trim() === '' || mobile.trim() === '') {
+      console.error('All fields are required.');
+      return;
+    }
+
+    // if (/\s/.test(name) || /\s/.test(mobile)) {
+    //   console.error('Spaces are not allowed.');
+    //   return;
+    // }
+
+    
+    fetch('/profile-edit-address?id=' + formData.get('id'), {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        $('#profile-edit-address').modal('hide');
+        // Optionally update the address list on the page
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch(error => {
+      console.error('An error occurred:', error);
+    });
+  });
+});
+</script>
+
+<%- include('../layout/footer.ejs') %>
