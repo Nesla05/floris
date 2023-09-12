@@ -71,7 +71,7 @@ const userWishlist = async (req, res) => {
         const newWishlist = new Wishlist({ userId, products: [] });
         userWishlist = await newWishlist.save();
       }
-  
+   
       // Check if the product is already in the wishlist
       const productIndex = userWishlist.products.findIndex(
         (product) => product.productId == productId
