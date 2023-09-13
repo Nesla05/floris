@@ -14,8 +14,8 @@ const twilio = require("twilio");
 const accontSid = process.env.ACCOUNT_SID
 const authToken = process.env.AUTH_TOKEN
 const verifySid = process.env.VERIFY_SID
-const twilioNumber = (process.env.ACCOUNT_SID, process.env.tWILIONUMBER);
-const client = twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+// const twilioNumber = (process.env.ACCOUNT_SID, process.env.tWILIONUMBER);
+const client = twilio(accontSid,authToken);
 
 
 const securePassword = async (password) => {
@@ -28,11 +28,8 @@ const securePassword = async (password) => {
   }
 };
 
-const generateOTP = async () => {
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  
-  req.session.otp = otp;
-};
+
+
 
 const loadRegister = async (req, res) => {
   try {
@@ -134,20 +131,23 @@ const insertUser = async (req, res) => {
       });
     }
 
-    //OTP
-    function generateOTP(length) {
-      const digits = "0123456789";
-      let OTP = "";
-      for (let i = 0; i < length; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-      }
-      return OTP;
-    }
-
-    const otp = generateOTP(6);
+   
+    
 
   // Send OTP to the user via SMS
+  const otp = Math.floor(100000 + Math.random() * 900000);
   
+  req.session.otp = otp;
+  // console.log(otp);
+    const phoneNumbers = [mobile]; // Add other phone numbers here if needed
+    for (const phoneNumber of phoneNumbers) {
+      const verification = await client.verify.v2
+        .services(verifySid)
+        .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
+      console.log(`OTP sent to ${phoneNumber}: ${otp}`);
+    }
+
+    console.log(otp);
  
 
     req.session.user = {
@@ -159,15 +159,8 @@ const insertUser = async (req, res) => {
       is_admin: user.is_admin,
     };
 
-    const phoneNumbers = [mobile]; // Add other phone numbers here if needed
-    for (const phoneNumber of phoneNumbers) {
-      const verification = await client.verify.v2
-        .services(verifySid)
-        .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
-      console.log(`OTP sent to ${phoneNumber}: ${otp}`);
-    }
-
-    console.log(otp);
+    
+ 
     res.redirect("/verifyOtp");
   } catch (error) {
     console.log(error);
@@ -237,8 +230,14 @@ const loadVerifyOtp = async (req, res) => {
 const verifyOTP = async (req, res) => {
   try {
     const otp = req.body.otp;
+    const mob = req.body.mobile;
     if (otp == req.session.otp) {
       // OTP is correct, proceed with login
+      let response = await client.verify.v2
+      .services(verifySid)
+      .verificationChecks.create({ to: `+91${mob}`, code: otp });
+    response.valid = true;
+    
       const userData = req.session.user;
       req.session.user_id = req.session.user_id;
       req.session.otp = undefined; // Clear OTP after successful verification

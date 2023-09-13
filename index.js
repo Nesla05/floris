@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/perfume").then(() => {
+mongoose.connect("mongodb+srv://neslanes0524:floris00@floris.x5duodb.mongodb.net/floris?retryWrites=true&w=majority", {
+  
+}).then(() => {
   console.log("db connected");
 });
 

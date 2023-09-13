@@ -115,7 +115,7 @@ user_route.get('/delete_address',auth.isLoggedIn,auth.isblock,addressController.
 
 user_route.get('/cartt/apply-coupon/:id',cartController.applyCoupon)
 user_route.post('addCoupon',cartController.applyCoupon)
-
+// user_route.get('/cartt/remove-coupon', cartController.removeCoupon)
 
 user_route.get('/payment',auth.isLoggedIn,auth.isblock,orderController.payment,);
 

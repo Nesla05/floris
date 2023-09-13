@@ -384,6 +384,24 @@ const applyCoupon = async (req, res) => {
   }
 };
 
+const removeCoupon = async(req, res) => {
+  console.log("testinggg");
+  try {
+      const { id } = req.query
+      await Cart.updateOne({ user: id }, {
+          $unset: {
+              coupon:1,
+              couponAmount:1,
+              subTotal: 1,
+              totalPrice:1
+          }
+      }).then(() => {
+          res.json(true)
+      })
+  } catch (error) {
+      console.log(error);
+  }
+}
 
 module.exports = {
   userCart,
@@ -392,5 +410,6 @@ module.exports = {
   decrementStock,
   deleteCartItem,
   checkout,
-  applyCoupon
+  applyCoupon,
+  removeCoupon
 };

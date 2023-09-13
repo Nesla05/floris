@@ -248,8 +248,10 @@
                       <div class="card cursor-pointer" style="cursor: pointer;">
                         <div class="card-body couponBtn" data-id="<%= coupon._id %>" name="<%= coupon._id %>">
                           <%= coupon.name %>
+                          <li class="mt-n3 mb-n2 d-none" id="removeBtn"><span> <a href="#" id="removeCouponLink" data-remove-url="/cartt/remove-coupon?id=<%= user._id %>" class="text-danger">Remove</a></span></li>
+                
                         </div>
-                        
+                       
                       </div>
                      
                     <% }) %>
@@ -463,3 +465,23 @@ function incrementStock(productId, cartId) {
       document.getElementById('couponApplied').innerHTML = response.message;
     }
   </script>
+
+<script>
+  const removeCouponLink = document.getElementById('removeCouponLink')
+  removeCouponLink.addEventListener('click',(e)=>{
+      e.preventDefault()
+      const url = removeCouponLink.getAttribute('data-remove-url')
+      const subTotal = document.getElementById('subTotal').value
+      $.ajax({
+          url,
+          method:'GET',
+          success:(response)=>{
+              document.getElementById('removeBtn').classList.add('d-none')
+                  document.getElementById('discount').innerHTML = `` 
+                  document.getElementById('couponName').innerHTML = `` 
+                  document.getElementById('totalAmount').innerHTML = ` ${subTotal}` 
+                  document.getElementById('couponApplied').innerHTML = ''
+          }
+      })
+  })
+</script>
