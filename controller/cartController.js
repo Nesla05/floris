@@ -342,7 +342,7 @@ const applyCoupon = async (req, res) => {
     if (totalPrices< coupon.minPurchase) {
       return res.json({
         status: false,
-        total,
+        totalPrices,
         message: `Purchase for ₹${coupon.minPurchase} to apply this Coupon`,
       });
     }
@@ -392,7 +392,7 @@ const removeCoupon = async(req, res) => {
           $unset: {
               coupon:1,
               couponAmount:1,
-              subTotal: 1,
+              
               totalPrice:1
           }
       }).then(() => {

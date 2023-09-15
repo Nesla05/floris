@@ -32,8 +32,8 @@ const loadProductList = async (req, res) => {
 const loadAddProduct = async (req, res) => {
   try {
     let categories = await Category.find({});
-
-    res.render("addProduct", { category: categories });
+    console.log(categories,'jikll')
+    res.render("addProduct", {category:categories});
   } catch (error) {
     console.log(error.message);
   }
@@ -41,23 +41,18 @@ const loadAddProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const { name, description, type, category, brand, stock, price , orginalPrice} = req.body;
+    const { name, description, type, category, brand, stock, price, orginalPrice } = req.body;
 
     // Check if any of the required fields are missing
     if (!name || !description || !type || !category || !brand || !stock || !price || !orginalPrice) {
+      let categories = await Category.find({});
+      console.log(categories,'nesla')
       return res.render('addProduct', { message: "All fields are required" });
+      // res.send("huyyy")
     }
-// console.log(category ,'ggggggggggg');
+
     // Check if any field contains spaces
-    if (
-      name.includes(" ") ||
-      description.includes(" ") ||
-      type.includes(" ") ||
-      category.includes(" ") ||
-      brand.includes(" ")
-    ) {
-      return res.render('addProduct', { message: "Fields cannot contain spaces." });
-    }
+  
 
     // Continue with product creation
     const filesArray = req.files ? Object.values(req.files).flat() : [];
@@ -83,6 +78,7 @@ const createProduct = async (req, res) => {
     return res.status(500).send("Error adding product to the database");
   }
 };
+
 
 
 const showProduct = async (req, res) => {

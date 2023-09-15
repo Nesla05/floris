@@ -4,6 +4,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const user_route = express();
 
+require('dotenv').config();
+
 user_route.use(nocache());
 user_route.set('view engine', 'ejs');
 user_route.set('views', './views/user');
@@ -24,7 +26,7 @@ const auth = require('../middileware/auth');
 
 // Set up MongoDBStore for session storage
 const store = new MongoDBStore({
-  uri: 'mongodb://127.0.0.1:27017/perfume',
+  uri: process.env.MONGO_DB_URL,
   collection: 'perfume',
 });
 
@@ -115,7 +117,7 @@ user_route.get('/delete_address',auth.isLoggedIn,auth.isblock,addressController.
 
 user_route.get('/cartt/apply-coupon/:id',cartController.applyCoupon)
 user_route.post('addCoupon',cartController.applyCoupon)
-// user_route.get('/cartt/remove-coupon', cartController.removeCoupon)
+user_route.get('/cartt/remove-coupon/:id', cartController.removeCoupon)
 
 user_route.get('/payment',auth.isLoggedIn,auth.isblock,orderController.payment,);
 

@@ -230,14 +230,8 @@ const loadVerifyOtp = async (req, res) => {
 const verifyOTP = async (req, res) => {
   try {
     const otp = req.body.otp;
-    const mob = req.body.mobile;
     if (otp == req.session.otp) {
       // OTP is correct, proceed with login
-      let response = await client.verify.v2
-      .services(verifySid)
-      .verificationChecks.create({ to: `+91${mob}`, code: otp });
-    response.valid = true;
-    
       const userData = req.session.user;
       req.session.user_id = req.session.user_id;
       req.session.otp = undefined; // Clear OTP after successful verification

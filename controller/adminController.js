@@ -6,6 +6,7 @@ const Order = require("../models/orderModel");
 
 const adminLoginLoad = async (req, res) => {
   try {
+    console.log("hhh");
     res.render("adminlogin");
   } catch (error) {
     console.log(error.message);
