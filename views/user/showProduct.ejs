@@ -21,11 +21,12 @@
     </div>
   </div>
 </div>
+
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
   <div class="container">
     <div class="logo">
-		<img src="images/floris-logo.png" alt="logo" style="width: 150px;">
-	</div>
+      <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="oi oi-menu"></span> Menu
     </button>
@@ -36,17 +37,15 @@
         <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
         <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
         <% if(! locals.User) {%> 
-          <li class="nav-item"><a href="/login"  class="nav-link">login</a> </li>
-          <% } else {%>
-          <li class="nav-item cta cta-colored"><a href="/profile"class="nav-link">Profile</a></li>
+          <li class="nav-item"><a href="/login"  class="nav-link">login</a></li>
+        <% } else {%>
+          <li class="nav-item cta cta-colored"><a href="/profile" class="nav-link">Profile</a></li>
           <li class="nav-item cta cta-colored"><a href="/cartt" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-          <% } %>
-          
+        <% } %>
       </ul>
     </div>
   </div>
 </nav>
-<!-- END nav -->
 
 <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
   <div class="container">
@@ -61,9 +60,10 @@
 
 <div class="d-flex justify-content-center align-items-center">
   <form action="/your-search-route" method="GET" class="d-flex">
-    <div class="input-group" style="width: 700px;">
+    <div class="input-group" style="width: 100%;">
       <input type="text" name="search" value="<%= searchQuery %>" class="form-control" placeholder="Search products">
-      &nbsp; &nbsp; &nbsp;  <button type="submit" class="btn btn-outline-dark " style="border-radius: 70px;">
+      &nbsp; &nbsp; &nbsp;
+      <button type="submit" class="btn btn-outline-dark" style="border-radius: 70px;">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
     </div>
@@ -71,230 +71,138 @@
 </div>
 
 <section class="ftco-section bg-light">
+  <div class="container">
+    <div class="row">
 
- <div class="container">
-    <div class="row" >
-      <div class="col-md-8 col-lg-10 order-md-last">
-
-        <div class="row" >
-            <% let count = 0; %>
-            <% products.forEach(product => { %>
-              <% if (product.is_listed) { %>
-                <% if (count % 3 === 0 && count !== 0) { %>
-                  </div>
-                  <div class="row mt-4"> <!-- Add margin-top to create space between rows of products -->
-                <% } %>
-                <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate">
-                  <div class="d-flex flex-item-end"> <!-- Apply flex classes to align product content to the right -->
-                    <% if (product && product.price !== null && typeof product.price === 'number') { %>
-                      <a href="/single-product?id=<%= product._id %>" style="text-decoration: none;">
-                        <div class="product">
-                          <a href="/single-product?id=<%= product._id %>" class="img-prod">
-                            <img class="img-fluid" src="/uploads/<%= product.images[0] %>" alt="<%= product.name %>">
-                            <div class="overlay"></div>
-                          </a>
-                          <div class="text py-3 pb-4 px-3">
-                            <div class="d-flex">
-                              <div class="cat">
-                                <span>Lifestyle</span>
-                              </div>
-                            </div>
-                            <h3><a href="/single-product?id=<%= product._id %>"><%= product.name %></a></h3>
-                            <div class="pricing">
-                              <p class="price"><%= product.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></p>
-                            </div>
-                            <p class="bottom-area d-flex px-3">
-                              <a href="" class="add-to-cart text-center py-2 mr-1" id="addToCartBtn_<%= product.id %>" onclick="addToCart('<%= product.id %>')">
-                                <span>Add to cart <i class="ion-ios-add ml-1"></i></span>
-                              </a>
-                              <a href="#" class="buy-now text-center py-2">
-                                Buy now<span><i class="ion-ios-cart ml-1"></i></span>
-                              </a>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    <% } else { %>
-                      <p>Product details not available.</p>
-                    <% } %>
-                  </div>
-                </div>
-                <% count++; %>
-              <% } %>
-            <% }) %>
-          </div>
-          
-      
-
-
-
-
-                
-        <div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                
-                  <% if (hasPrevPage) { %>
-                    <li> <a href="?page=<%= prevPage %>" class="prev-arrow">&lt;</a></li>
-                  <% } %>
-                  <% for (let i = 1; i <= Math.ceil(totalProducts / ITEMS_PER_PAGE); i++) { %>
-                    <li><a href="?page=<%= i %>" <% if (currentPage === i) { %>class="active"<% } %>><%= i %></a></li>
-                  <% } %>
-                  <% if (hasNextPage) { %>
-                  <li><a href="?page=<%= nextPage %>" class="next-arrow">&gt;</a></li>
-                  <% } %>
-              
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-     
-
-      <div class="col-md-4 col-lg-2"  >
+      <div class="col-md-4 col-lg-2">
         <div class="sidebar">
           <div class="sidebar-box-2">
             <h2 class="heading">Categories</h2>
             <div class="fancy-collapse-panel">
               <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                 <div class="panel panel-default">
-                     <div class="panel-heading" role="tab" id="headingOne">
-                         <h4 class="panel-title">
-                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">category
-                             </a>
-                         </h4>
-                     </div>
-                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                         <div class="panel-body">
-                          <ul>
-                            <% categories.forEach(function(category) { %>
-                            <li>.
-                            <a href="/filter-by-category?id=<%= category._id %>">
-                                
-                              <span class="span"><%= category.name %></span>
-              
-                            </a>
-                            </li>
-                            <% }); %>
-                          </ul>
-                         </div>
-                     </div>
-                 </div>
-                 <!-- <div class="panel panel-default">
-                     <div class="panel-heading" role="tab" id="headingTwo">
-                         <h4 class="panel-title">
-                             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Women's Shoes
-                             </a>
-                         </h4>
-                     </div>
-                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                         <div class="panel-body">
-                            <ul>
-                               <li><a href="#">Sport</a></li>
-                               <li><a href="#">Casual</a></li>
-                               <li><a href="#">Running</a></li>
-                               <li><a href="#">Jordan</a></li>
-                               <li><a href="#">Soccer</a></li>
-                               <li><a href="#">Football</a></li>
-                               <li><a href="#">Lifestyle</a></li>
-                            </ul>
-                         </div>
-                     </div>
-                 </div> -->
-                
-              </div>
-           </div>
-          </div>
-         
-
-          
-          <div class="range">
-            <form action="/pricerange" method="post"> 
-              <div class="sidebar-box-2">
-              <h2 class="heading">PRICE RANGE</h2>
-              <% if(locals.msg) { %>
-                <div id="msg" class="alert alert-success"><%- locals.msg -%></div>
-                <%}%>
-              <div class="price-input">
-                <div class="field ">
-                  <span>Min</span>
-                  <input type="number" class="input-min" name="min_price" placeholder="0" value="min_price">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Category</a>
+                    </h4>
                   </div>
-                <div class="separator">-</div>
-                <div class="field">
-                  <span>Max</span>
-                  <input type="number" class="input-max" name="max_price" placeholder="" value="max_price">
+                  <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <ul>
+                        <% categories.forEach(function(category) { %>
+                          <li>
+                            <a href="/filter-by-category?id=<%= category._id %>">
+                              <span class="span"><%= category.name %></span>
+                            </a>
+                          </li>
+                        <% }); %>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
-               <br>
-                <button type="submit" class="btn btn-success">Filter</button>
-            </form>
+            </div>
           </div>
-           
+      
+          <div class="range">
+            <form action="/pricerange" method="post">
+              <div class="sidebar-box-2">
+                <h2 class="heading">PRICE RANGE</h2>
+                <% if(locals.msg) { %>
+                  <div id="msg" class="alert alert-success"><%- locals.msg -%></div>
+                <% } %>
+                <div class="price-input">
+                  <div class="field">
+                    <span>Min</span>
+                    <input type="number" class="input-min" name="min_price" placeholder="0" value="min_price">
+                  </div>
+                  <div class="separator">-</div>
+                  <div class="field">
+                    <span>Max</span>
+                    <input type="number" class="input-max" name="max_price" placeholder="" value="max_price">
+                  </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-success">Filter</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- <section class="ftco-gallery">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 heading-section text-center mb-4 ftco-animate">
-        <h2 class="mb-4">Follow Us On Instagram</h2>
-        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+      <div class="col-md-8 col-lg-10 order-md-last">
+        <div class="row">
+          <% let count = 0; %>
+          <% products.forEach(product => { %>
+            <% if (product.is_listed) { %>
+              <% if (count % 3 === 0 && count !== 0) { %>
+                </div>
+                <div class="row mt-4"> <!-- Add margin-top to create space between rows of products -->
+              <% } %>
+              <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate">
+                <div class="d-flex flex-item-end"> <!-- Apply flex classes to align product content to the right -->
+                  <% if (product && product.price !== null && typeof product.price === 'number') { %>
+                    <a href="/single-product?id=<%= product._id %>" style="text-decoration: none;">
+                      <div class="product">
+                        <a href="/single
+  <div class="product">
+    <a href="/single-product?id=<%= product._id %>" class="img-prod">
+      <img class="img-fluid" src="/uploads/<%= product.images[0] %>" alt="<%= product.name %>">
+      <div class="overlay"></div>
+    </a>
+    <div class="text py-3 pb-4 px-3">
+      <div class="d-flex">
+        <div class="cat">
+          <span>Lifestyle</span>
+        </div>
       </div>
+      <h3><a href="/single-product?id=<%= product._id %>"><%= product.name %></a></h3>
+      <div class="pricing">
+        <p class="price"><%= product.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></p>
+      </div>
+      <p class="bottom-area d-flex px-3">
+        <a href="" class="add-to-cart text-center py-2 mr-1" id="addToCartBtn_<%= product.id %>" onclick="addToCart('<%= product.id %>')">
+          <span>Add to cart <i class="ion-ios-add ml-1"></i></span>
+        </a>
+        <a href="#" class="buy-now text-center py-2">
+          Buy now<span><i class="ion-ios-cart ml-1"></i></span>
+        </a>
+      </p>
     </div>
   </div>
-  <div class="container-fluid px-0">
-    <div class="row no-gutters">
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-1.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-1.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-2.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-3.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-4.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-5.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-5.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4 col-lg-2 ftco-animate">
-        <a href="images/gallery-6.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-6.jpg);">
-          <div class="icon mb-4 d-flex align-items-center justify-content-center">
-            <span class="icon-instagram"></span>
-          </div>
-        </a>
-      </div>
+</a>
+<% } else { %>
+  <p>Product details not available.</p>
+<% } %>
+</div>
+</div>
+<% count++; %>
+<% } %>
+<% }) %>
+</div>
+
+<div class="row mt-5">
+  <div class="col text-center">
+    <div class="block-27">
+      <ul>
+        <% if (hasPrevPage) { %>
+          <li> <a href="?page=<%= prevPage %>" class="prev-arrow">&lt;</a></li>
+        <% } %>
+        <% for (let i = 1; i <= Math.ceil(totalProducts / ITEMS_PER_PAGE); i++) { %>
+          <li><a href="?page=<%= i %>" <% if (currentPage === i) { %>class="active"<% } %>><%= i %></a></li>
+        <% } %>
+        <% if (hasNextPage) { %>
+          <li><a href="?page=<%= nextPage %>" class="next-arrow">&gt;</a></li>
+        <% } %>
+      </ul>
     </div>
-  </div> -->
+  </div>
+</div>
+</div>
+
+
+</div>
+</div>
 </section>
 
 <script>
@@ -307,22 +215,21 @@ function addToCart(productId) {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Response data:', data);
+  .then((response) => response.json())
+  .then((data) => {
+    console.log('Response data:', data);
 
-      // Handle the response data
-      if (data.status === 'success') {
-        alert(data.message); // Show a success message
-      } else {
-        alert(data.message); // Show an error message
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    // Handle the response data
+    if (data.status === 'success') {
+      alert(data.message); // Show a success message
+    } else {
+      alert(data.message); // Show an error message
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 }
-    </script>
-
+</script>
 
 <%- include('../layout/footer.ejs') %>

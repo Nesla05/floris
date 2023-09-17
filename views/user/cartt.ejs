@@ -1,482 +1,360 @@
 <%- include('../layout/header.ejs') %>
 
-
-		<div class="py-1 bg-black">
-    	<div class="container">
-    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
-	    		<div class="col-lg-12 d-block">
-		    		<div class="row d-flex">
-		    			<div class="col-md pr-4 d-flex topper align-items-center">
-					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
-						    <span class="text">+ 1235 2355 98</span>
-					    </div>
-					    <div class="col-md pr-4 d-flex topper align-items-center">
-					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-						    <span class="text">floris@email.com</span>
-					    </div>
-					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-						    <span class="text">3-5 Business days delivery &amp; Easy Returns</span>
-					    </div>
-				    </div>
-			    </div>
-		    </div>
-		  </div>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container"> <div class="logo">
-        <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
-      </div>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
-
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="/showProduct" class="nav-link">Shop</a></li>
-	         
-	          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="/Contact" class="nav-link">Contact</a></li>
-
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-            <p class="breadcrumbs"><span class="mr-2"><a href="home">Home</a></span> <span>Cart</span></p>
-            <h1 class="mb-0 bread">My Cart</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- END nav -->
-    <% if (!locals.products) { %>
-      <div class="container-fluid  mt-100">
-        <div class="row">
-        
-           <div class="col-md-12">
-           
-               <div class="card">
-             <div class="card-header">
-             
-             </div>
-             <div class="card-body cart">
-                 <div class="col-sm-12 empty-cart-cls text-center">
-                   <img src="https://assets.materialup.com/uploads/16e7d0ed-140b-4f86-9b7e-d9d1c04edb2b/preview.png"  width="130px" height="130px" class="img-fluid cart_img mb-4 mr-3">
-                   <h3><strong>Your Cart is Empty</strong></h3>
-                   <h4>Add something to make me happy :)</h4>
-                   <a href="/showProduct" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
-                   
-                 
-                 </div>
-             </div>
-         </div>
-             
-           
-           </div>
-        <br>
-        </div>
-         
-         </div>
-         <% } else { %>
-   
-
-    <section class="ftco-section ftco-cart">
-     
-			<div class="container">
-				<div class="row">
-    			<div class="col-md-12 ftco-animate">
-    				<div class="cart-list">
-              
-          
-	    				<table class="table">
-               
-						    <thead class="thead-primary">
-						      <tr class="text-center">
-						        <th>&nbsp;</th>
-						        <th>Product</th>
-						        <th>Price</th>
-						        <th>Quantity</th>
-						        <th>Total</th>
-						        <th>&nbsp;</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-                  <% products.forEach(function(product,index) { %>
-						      <tr class="text-center">
-						       
-						        <td>
-                      <img src="../uploads/<%= product.productId.images[0] %>"
-                          class="img-fluid rounded-3" style="max-width: 100px; max-height: 100px;">
-
-                    </td>
-						        
-						        <td class="product-name">
-						        	<h3><%= product.productId.name %></h3>
-						        	<p><%= product.productId.type %></p>
-						        </td>
-                    <td>
-                    
-                   <h6 class="mb-0 invert item-total" id="total-price"><%= product.productId.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></h6>
-						        <!-- <td class="price">$4.90</td> -->
-                  </td>
-                  <td style="text-align: center;">
-                    <div class="d-flex flex-row justify-content-center">
-                      <a onclick="decrementStock('<%= product.productId._id %>','<%= cartId %>')" style="cursor: pointer;">
-                      
-                        <i class="fas fa-minus"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      </a>
-                      
-                      <samp>
-                        <input id="stock_<%= cartId %>_<%= product.productId._id %>" max="100"
-                          name="stock" value="<%= product.stock %>" class="form-control form-control-s" />
-                        <span id="stock-message-<%= cartId %>_<%= product.productId._id %>"></span>
-                      </samp>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <a  onclick="incrementStock('<%= product.productId._id %>','<%= cartId %>')" style="cursor: pointer;">
-                        <i class="fas fa-plus"></i>
-                      </a>
+<div class="py-1 bg-black">
+    <div class="container">
+        <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+            <div class="col-lg-12 d-block">
+                <div class="row d-flex">
+                    <div class="col-md pr-4 d-flex topper align-items-center">
+                        <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+                        <span class="text">+ 1235 2355 98</span>
                     </div>
-                  </td>
-                  
-						      <td>
-                    <% let totalPrice = 0; %> 
-                    <% totalPrice += product.productId.price * product.stock; %> 
-                   <h6 class="mb-0 invert item-total" id="total-price"><%=totalPrice.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %>%></h6>
-                 
-                  </td>
-                  <td class="product-remove"><a href="/deleteCartItem/<%= product.productId._id %>"><span class="ion-ios-close"></span></a></td>
-						      </tr><!-- END TR-->
-                  <% }) %>
-						    </tbody>
-               
-						  </table>
-             
-					  </div>
-    			</div>
-
-         
-    		</div>
-
-<div class="container">
-  <form action="/checkoutt" method="get">
-
-  <div class="row justify-content-around">
-    
-    <div class="col-4">
-      
-      <div class="cart-total">
-        <h3>Cart Total</h3>
-        <p class="d-flex" >   
-                    
-          <% let total = 0; %>
-          <% products.forEach(product => { %>
-            <% total += product.productId.orginalPrice *
-              product.stock; %>
-          <% }); %>
-          <span>Total Price</span>
-          <span><%= total.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-        </p>
-    
-        <% let totalPrices = 0; %> <% products.forEach(product => {
-          %> <% totalPrices += product.productId.price *
-          product.stock; %> <% }); %>
-    
-        <p class="d-flex">
-          <% let discount=0; %>
-          <% products.forEach(product =>  { %>
-            <% discount = totalPrices - product.productId. orginalPrice * product.stock;;
-            %> <% }); %>
-    
-          <span>Discount</span>
-          <span class="text-success">&nbsp;<%= discount.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-        </p>
-    
-        <p class="d-flex">
-          <span>Subtotal</span>
-          <span> <%= totalPrices.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-        </p>
-    
-        <p class="d-flex">
-          <span>Coupon Discount</span>
-          <span id="coupon" class="text-success">-</span>
-          <span class="text-dark" id="couponName"></span>
-          <li class="mt-n3 mb-n2 d-none" id="removeBtn"><span> <a href="#" id="removeCouponLink" data-remove-url="/cartt/remove-coupon/<%= user._id %>" class="text-danger">Remove</a></span></li>
-        </p>
-    
-        <p class="d-flex">
-          <span>Delivery</span>
-          <span class="text-success"> <%= deliveryFee.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-        </p>
-    
-        <p class="d-flex">
-          <span>GST</span>
-          <span><%= Math.floor(gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-        </p>
-    
-        <hr>
-    
-        <p class="d-flex total-price" >
-          <% let totalPrice = 0; %> <% products.forEach(product => {
-            %> <% totalPrice += product.productId.price *
-            product.stock; %> <% }); %>
-    
-          <span>Total</span>
-          <% if(deliveryFee === 'free') {%>
-          <span id="totalPrice"  ><%= (totalPrices + 0 + gstAmount ).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-          <% } else  { %>
-          <span id="totalPrice" ><%= (totalPrices + 40 + gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-          <% } %>
-        </p>
-        <button type="submit " class="text-center  py-3 px-4">Proceed to Checkout</button>
-     
-    </div>
-             
-    </div>
-    <div class="col-4">
-      <div class="">
-        <h4>Couons</h4>
-        <div class="couserponter">
-          <% coupons.forEach((coupon,index)=>{ %>
-            <div class="card cursor-pointer" style="cursor: pointer;">
-              <div class="card-body couponBtn" data-id="<%= coupon._id %>" name="<%= coupon._id %>">
-                <%= coupon.name %>
-              </div>
+                    <div class="col-md pr-4 d-flex topper align-items-center">
+                        <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+                        <span class="text">floris@email.com</span>
+                    </div>
+                    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+                        <span class="text">3-5 Business days delivery &amp; Easy Returns</span>
+                    </div>
+                </div>
             </div>
-          <% }) %>
         </div>
-        <p class="text-success" id="couponApplied">
-        </p>
-      </div>
     </div>
-  </div>
-  </form>
 </div>
 
-        
-    		</div>
-			</div>
-     <% } %>
-		</section>
-		
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <div class="logo">
+            <img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
 
-  
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/showProduct" class="nav-link">Shop</a></li>
 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+                <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/Contact" class="nav-link">Contact</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="home">Home</a></span> <span>Cart</span></p>
+                <h1 class="mb-0 bread">My Cart</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END nav -->
+<% if (!locals.products) { %>
+<div class="container-fluid mt-100">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="card">
+                <div class="card-header">
+
+                </div>
+                <div class="card-body cart">
+                    <div class="col-sm-12 empty-cart-cls text-center">
+                        <img src="https://assets.materialup.com/uploads/16e7d0ed-140b-4f86-9b7e-d9d1c04edb2b/preview.png" width="130px" height="130px" class="img-fluid cart_img mb-4 mr-3">
+                        <h3><strong>Your Cart is Empty</strong></h3>
+                        <h4>Add something to make me happy :)</h4>
+                        <a href="/showProduct" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
 
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/jquery.waypoints.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/jquery.animateNumber.min.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script>
-  <script src="js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="js/google-map.js"></script>
-  <script src="js/main.js"></script>
+                    </div>
+                </div>
+            </div>
 
 
-  <script>
+        </div>
+        <br>
+    </div>
+
+</div>
+<% } else { %>
+
+
+<section class="ftco-section ftco-cart">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+              <div class="cart-list">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>&nbsp;</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% products.forEach(function(product,index) { %>
+                            <tr class="text-center">
+                                <td>
+                                    <img src="../uploads/<%= product.productId.images[0] %>" class="img-fluid rounded-3" style="max-width: 100px; max-height: 100px;">
+                                </td>
+                                <td class="product-name">
+                                    <h3><%= product.productId.name %></h3>
+                                    <p><%= product.productId.type %></p>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0 invert item-total" id="total-price"><%= product.productId.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></h6>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <a onclick="decrementStock('<%= product.productId._id %>','<%= cartId %>')" style="cursor: pointer;">
+                                            <i class="fas fa-minus"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </a>
+                                        <samp>
+                                            <input id="stock_<%= cartId %>_<%= product.productId._id %>" max="100" name="stock" value="<%= product.stock %>" class="form-control form-control-s" />
+                                            <span id="stock-message-<%= cartId %>_<%= product.productId._id %>"></span>
+                                        </samp>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a onclick="incrementStock('<%= product.productId._id %>','<%= cartId %>')" style="cursor: pointer;">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <% let totalPrice = 0; %> <% totalPrice += product.productId.price * product.stock; %> <h6 class="mb-0 invert item-total" id="total-price"><%=totalPrice.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %>%></h6>
+                                </td>
+                                <td class="product-remove"><a href="/deleteCartItem/<%= product.productId._id %>"><span class="ion-ios-close"></span></a></td>
+                            </tr><!-- END TR-->
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            </div>
+
+        </div>
+
+        <div class="container">
+            <form action="/checkoutt" method="get">
+
+                <div class="row justify-content-around">
+
+                    <div class="col-12 col-md-4">
+
+                        <div class="cart-total">
+                            <h3>Cart Total</h3>
+                            <p class="d-flex">
+
+                                <% let total = 0; %> <% products.forEach(product => { %> <% total += product.productId.orginalPrice * product.stock; %> <% }); %> <span>Total Price</span> <span><%= total.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+                            </p>
+
+                            <% let totalPrices = 0; %> <% products.forEach(product => { %> <% totalPrices += product.productId.price * product.stock; %> <% }); %> <p class="d-flex"> <% let discount=0; %> <% products.forEach(product => { %> <% discount = totalPrices - product.productId.orginalPrice * product.stock;; %> <% }); %> <span>Discount</span> <span class="text-success">&nbsp;<%= discount.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+                            </p> <p class="d-flex"> <span>Subtotal</span> <span> <%= totalPrices.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+                            </p>
+
+                            <p class="d-flex"> <span>Coupon Discount</span> <span id="coupon" class="text-success">-</span> <span class="text-dark" id="couponName"></span> <li class="mt-n3 mb-n2 d-none" id="removeBtn"><span> <a href="#" id="removeCouponLink" data-remove-url="/cartt/remove-coupon/<%= user._id %>" class="text-danger">Remove</a></span></li>
+                            </p>
+
+                            <p class="d-flex"> <span>Delivery</span> <span class="text-success"> <%= deliveryFee.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+                            </p>
+
+                            <p class="d-flex"> <span>GST</span> <span><%= Math.floor(gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+                            </p>
+
+                            <hr>
+
+                            <p class="d-flex total-price"> <% let totalPrice = 0; %> <% products.forEach(product => { %> <% totalPrice += product.productId.price * product.stock; %> <% }); %> <span>Total</span> <% if(deliveryFee === 'free') {%> <span id="totalPrice"><%= (totalPrices + 0 + gstAmount ).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span> <% } else  { %> <span id="totalPrice"><%= (totalPrices + 40 + gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span> <% } %>
+                            </p>
+                            <button type="submit " class="text-center  py-3 px-4">Proceed to Checkout</button>
+
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="">
+                            <h4>Couons</h4>
+                            <div class="couserponter">
+                                <% coupons.forEach((coupon,index)=>{ %>
+                                <div class="card cursor-pointer" style="cursor: pointer;">
+                                    <div class="card-body couponBtn" data-id="<%= coupon._id %>" name="<%= coupon._id %>">
+                                        <%= coupon.name %>
+                                    </div>
+                                </div>
+                                <% }) %>
+                            </div>
+                            <p class="text-success" id="couponApplied">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<% } %>
+<%- include('../layout/footer.ejs') %>
+
+<!-- Add Bootstrap and other scripts here -->
+
+<script>
 
 const deleteButtons = document.querySelectorAll('.delete-button');
 
-
-
 function incrementStock(productId, cartId) {
-    const stockInput = document.querySelector(
-      `#stock_${cartId}_${productId}`
-    );
-   
+    const stockInput = document.querySelector(`#stock_${cartId}_${productId}`);
     const stock = parseInt(stockInput.value);
-
     const data = { productId, cartId, stock };
-
-   
     fetch("/incrementStock", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
     })
-      .then((response) => {
+    .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+            throw new Error("Network response was not ok");
         }
         return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-         
-          const productTotalPriceElement = document.querySelector(
-            `#product-total-price-${cartId}`
-          );
-          if (productTotalPriceElement) {
-            productTotalPriceElement.textContent =
-              data.total.toLocaleString("en-IN");
-          }
-
-         
-          stockInput.value = data.stock;
-
-          
-          const messageElement = document.querySelector(
-            `#stock-message-${cartId}`
-          );
-          if (messageElement) {
-            messageElement.textContent = data.mess;
-          }
-
-          
-          setSubtotal();
-        } else {
-          console.log("Error while updating");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        
-      });
-  }
-
-  function decrementStock(productId, cartId) {
-    const stockInput = document.querySelector(
-      `#stock_${cartId}_${productId}`
-    );
-   
-    const stock = parseInt(stockInput.value);
-
-    const data = { productId, cartId, stock };
-
-   
-    fetch("/decrementStock", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
+    .then((data) => {
         if (data.success) {
-         
-          const productTotalPriceElement = document.querySelector(
-            `#product-total-price-${cartId}`
-          );
-        
-          if (productTotalPriceElement) {
-            productTotalPriceElement.textContent =
-              data.total.toLocaleString("en-IN");
-          }
-
-          
-          stockInput.value = data.stock;
-
-          
-          const messageElement = document.querySelector(
-            `#stock-message-${cartId}`
-          );
-          if (messageElement) {
-            messageElement.textContent = data.mess;
-          }
-
-         
-
-
-          setSubtotal();
-        } else {
-          console.log("Error while updating");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        
-      });
-  }
-  </script>
- 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const couponButtons = document.querySelectorAll('.couponBtn');
-      couponButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-          event.preventDefault();
-          const id = event.target.dataset.id;
-          $.ajax({
-            url: `/cartt/apply-coupon/${id}`,
-            method: 'GET',
-            success: function(response) {
-              if (response.status) {
-                updateCouponApplied(response);
-              } else {
-                updateCouponRemoved(response);
-              }
+            const productTotalPriceElement = document.querySelector(`#product-total-price-${cartId}`);
+            if (productTotalPriceElement) {
+                productTotalPriceElement.textContent = data.total.toLocaleString("en-IN");
             }
-          });
-        });
-      });
+            stockInput.value = data.stock;
+            const messageElement = document.querySelector(`#stock-message-${cartId}`);
+            if (messageElement) {
+                messageElement.textContent = data.mess;
+            }
+            setSubtotal();
+        } else {
+            console.log("Error while updating");
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
     });
-  
-    function updateCouponApplied(response) {
-      console.log('start')
-      document.getElementById('couponName').innerHTML = `(${response.coupon.name})`;
-      console.log('testiggg')
-      document.getElementById('totalPrice').innerHTML = ` ₹ ${response.cart.totalPrice}`;
-      console.log('totalPrice')
-      document.getElementById('coupon').innerHTML = `- ₹ ${response.cart.couponAmount}`;
-      console.log('couponAmount')
-      document.getElementById('couponApplied').classList.remove('text-danger');
-      // console.log('testiggg',coupon.name)
-      document.getElementById('removeBtn').classList.remove('d-none');
-      document.getElementById('couponApplied').innerHTML = `${response.coupon.name} Applied!!!`;
-      console.log('test',)
-    }
-  
-    function updateCouponRemoved(response) {
-      document.getElementById('removeBtn').classList.add('d-none');
-      document.getElementById('coupon').innerHTML = '';
-      document.getElementById('couponName').innerHTML = '';
-      document.getElementById('totalPrice').innerHTML = ` ${response.total}`;
-      document.getElementById('couponApplied').classList.add('text-danger');
-      document.getElementById('couponApplied').innerHTML = response.message;
-    }
-  </script>
+}
 
-<script>
-  const removeCouponLink = document.getElementById('removeCouponLink')
-  removeCouponLink.addEventListener('click',(e)=>{
-      e.preventDefault()
-      const url = removeCouponLink.getAttribute('data-remove-url')
-      const subTotal = document.getElementById('subTotal').value
-      $.ajax({
-          url,
-          method:'GET',
-          success:(response)=>{
-              document.getElementById('removeBtn').classList.add('d-none')
-                  document.getElementById('discount').innerHTML = `` 
-                  document.getElementById('couponName').innerHTML = `` 
-                  document.getElementById('totalAmount').innerHTML = ` ${subTotal}` 
-                  document.getElementById('couponApplied').innerHTML = ''
-          }
-      })
-  })
+function decrementStock(productId, cartId) {
+    const stockInput = document.querySelector(`#stock_${cartId}_${productId}`);
+    const stock = parseInt(stockInput.value);
+    const data = { productId, cartId, stock };
+    fetch("/decrementStock", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw an Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then((data) => {
+        if (data.success) {
+            const productTotalPriceElement = document.querySelector(`#product-total-price-${cartId}`);
+            if (productTotalPriceElement) {
+                productTotalPriceElement.textContent = data.total.toLocaleString("en-IN");
+            }
+            stockInput.value = data.stock;
+            const messageElement = document.querySelector(`#stock-message-${cartId}`);
+            if (messageElement) {
+                messageElement.textContent = data.mess;
+            }
+            setSubtotal();
+        } else {
+            console.log("Error while updating");
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+}
+
 </script>
 
-<%- include('../layout/footer.ejs') %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const couponButtons = document.querySelectorAll('.couponBtn');
+    couponButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const id = event.target.dataset.id;
+            $.ajax({
+                url: `/cartt/apply-coupon/${id}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status) {
+                        updateCouponApplied(response);
+                    } else {
+                        updateCouponRemoved(response);
+                    }
+                }
+            });
+        });
+    });
+});
+
+function updateCouponApplied(response) {
+    console.log('start')
+    document.getElementById('couponName').innerHTML = `(${response.coupon.name})`;
+    console.log('testiggg')
+    document.getElementById('totalPrice').innerHTML = ` ₹ ${response.cart.totalPrice}`;
+    console.log('totalPrice')
+    document.getElementById('coupon').innerHTML = `- ₹ ${response.cart.couponAmount}`;
+    console.log('couponAmount')
+    document.getElementById('couponApplied').classList.remove('text-danger');
+    document.getElementById('removeBtn').classList.remove('d-none');
+    document.getElementById('couponApplied').innerHTML = `${response.coupon.name} Applied!!!`;
+    console.log('test',)
+}
+
+function updateCouponRemoved(response) {
+    document.getElementById('removeBtn').classList.add('d-none');
+    document.getElementById('coupon').innerHTML = '';
+    document.getElementById('couponName').innerHTML = '';
+    document.getElementById('totalPrice').innerHTML = ` ${response.total}`;
+    document.getElementById('couponApplied').classList.add('text-danger');
+    document.getElementById('couponApplied').innerHTML = response.message;
+}
+</script>
+
+<script>
+const removeCouponLink = document.getElementById('removeCouponLink')
+removeCouponLink.addEventListener('click',(e)=>{
+    e.preventDefault()
+    const url = removeCouponLink.getAttribute('data-remove-url')
+    const subTotal = document.getElementById('subTotal').value
+    $.ajax({
+        url,
+        method:'GET',
+        success:(response)=>{
+            document.getElementById('removeBtn').classList.add('d-none')
+            document.getElementById('discount').innerHTML = `` 
+            document.getElementById('couponName').innerHTML = `` 
+            document.getElementById('totalAmount').innerHTML = ` ${subTotal}` 
+            document.getElementById('couponApplied').innerHTML = ''
+        }
+    })
+})
+</script>
