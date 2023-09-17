@@ -103,66 +103,69 @@
           </div>
           <div class=" mb-4 p-5 " style="margin-bottom: 10px;"><br>
            
-          <% if(order_data) {%>
-            <div style="margin-left: 200px;">
-           <img src="images/icon.jpg" alt="" srcset="" style="width: 200px;">
-          <h4 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-left: 20px;" >No recent orders</h4>
-          <a href="/showProduct" style="color: rgb(192, 13, 22); margin-left: 50px; font-weight: bolder;">Start shopping</a>
-                   
-        </div>
-          <% } else { %>
-            <div class="card">
-              <% } %>
-              <% order_data.forEach((order, index) => { %>
-                <div class="card-body mb-4">
-                  <div class="card-header">
-                    ORDER PLACED <br>
-                    <% if (order.createdAt) { %>
-                      on <%= order.createdAt.toLocaleDateString() %>
-                    <% } %>
-                  </div>
-                  <div class="card-inner bg-light p-3 d-flex justify-content-between">
-                    <div class="left-content">
-                      <% order.items.forEach((item, i) => { %>
-                        <h5 class="card-title"><%= item.product.name %></h5>
-                        <p class="card-text"><%= item.product.type %></p>
-                      <% }) %>
-                    </div>
-                    <div class="right-content">
-                      <a href="/user-orderDetails?id=<%= order._id %>">
-                        <i class="fa-solid fa-chevron-right fa-xl" style="color: #000000;"></i>
-                      </a>
-                    </div>
-                  </div>
-            
-                  <div class="d-flex justify-content-between align-items-center card-footer text-muted">
-                    <div class="card-footer-left">
-                      <%= order.status %>
-                    </div>
-                    <div class="card-footer-right">
-                      <% if (order.status !== 'cancelled' && order.status !== 'Delivered' && order.status !== 'Delivered') { %>
-                        <a style="color: red;" href="/order-cancel?id=<%= order._id %>">cancel</a>
-                      <% } %>
-                    </div>
-                    <div>
-                      
-                      <%	if (order.status==='Delivered') {%> 
-
-                        
-                         <div id="repopup" class="rpopup">
-                           <span class="rclose" onclick="closePopup()">&times;</span>
-                         <div>
-                        <form action="/order_Return?id=<%= order._id %>" method="post">
-                          <input type="text" name="reason" required>
-                            <button type="submit" value="Return" class="btn btn-danger">Return</button>
-                        </form>
+           
+               
+              <% if(order_data && order_data.length > 0) { %>
+                <!-- Orders exist, display them -->
+                <div class="card">
+                  <% order_data.forEach((order, index) => { %>
+                    <!-- Display order information here -->
+                    <div class="card-body mb-4">
+                      <div class="card-header">
+                        ORDER PLACED <br>
+                        <% if (order.createdAt) { %>
+                          on <%= order.createdAt.toLocaleDateString() %>
+                        <% } %>
+                      </div>
+                      <div class="card-inner bg-light p-3 d-flex justify-content-between">
+                        <div class="left-content">
+                          <% order.items.forEach((item, i) => { %>
+                            <h5 class="card-title"><%= item.product.name %></h5>
+                            <p class="card-text"><%= item.product.type %></p>
+                          <% }) %>
+                        </div>
+                        <div class="right-content">
+                          <a href="/user-orderDetails?id=<%= order._id %>">
+                            <i class="fa-solid fa-chevron-right fa-xl" style="color: #000000;"></i>
+                          </a>
+                        </div>
+                      </div>
+                  
+                      <div class="d-flex justify-content-between align-items-center card-footer text-muted">
+                        <div class="card-footer-left">
+                          <%= order.status %>
+                        </div>
+                        <div class="card-footer-right">
+                          <% if (order.status !== 'cancelled' && order.status !== 'Delivered' && order.status !== 'Delivered') { %>
+                            <a style="color: red;" href="/order-cancel?id=<%= order._id %>">cancel</a>
+                          <% } %>
+                        </div>
+                        <div>
+                          
+                          <% if (order.status === 'Delivered') { %>
+                            <div id="repopup" class="rpopup">
+                              <span class="rclose" onclick="closePopup()">&times;</span>
+                              <div>
+                                <form action="/order_Return?id=<%= order._id %>" method="post">
+                                  <input type="text" name="reason" required>
+                                  <button type="submit" value="Return" class="btn btn-danger">Return</button>
+                                </form>
+                              </div>
+                            </div>
+                          <% } %>
+                        </div>
                       </div>
                     </div>
-                    <% } %>
-                  </div>
-                  </div>
+                  <% }) %>
                 </div>
-              <% }) %>
+              <% } else { %>
+                <!-- No orders, display a message -->
+                <div style="margin-left: 200px;">
+                  <img src="images/icon.jpg" alt="" srcset="" style="width: 200px;">
+                  <h4 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-left: 20px;"  >No recent orders</h4>
+                  <a href="/showProduct" style="color: rgb(192, 13, 22); margin-left: 50px; font-weight: bolder;">Start shopping</a>
+                </div>
+              <% } %>
             </div>
             
             <script>

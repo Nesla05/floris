@@ -41,16 +41,7 @@ const ProfileAddAddress = async (req, res) => {
       return;
     }
 
-    // Remove spaces from user input
-    const addressObject = {
-      name: name.trim(),
-      mobile: mobile.trim(),
-      email: email.trim(),
-      houseName: houseName.trim(),
-      district: district.trim(),
-      state: state.trim(),
-      pincode: pincode.trim(),
-    };
+    
 
     user.deliveryAddress.push(addressObject);
 
@@ -160,10 +151,7 @@ const addAddress = async (req, res) => {
       return;
     }
 
-    if (newAddress.name.includes(" ")) {
-      res.status(400).send("Name cannot contain spaces.");
-      return;
-    }
+   
 
     if (!/^\d{10}$/.test(newAddress.mobile)) {
       res.status(400).send("Mobile number must be 10 digits.");

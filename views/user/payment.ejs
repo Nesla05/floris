@@ -87,57 +87,55 @@
 				</div>
 			  </div>
 			  
-	          	<div class="col-md-6">
-	          		<div class="cart-detail bg-light p-3 p-md-4">
-	          			<h3 class="billing-heading mb-4">Payment Method</h3>
-   
-                      <div class="check_box_one cashon_delivery">
-                        <form action="/placeOrder?id=<%= address._id%>" method="post">
-                            
-
-                            <div class="form-group">
-                              <div class="col-md-12">
-                                <div class="radio">
-									<input
-									type="hidden"
-									name="selectedPaymentMethod"
-									id="selectedPaymentMethod"
-									value=""
-								  />
-									<label>
-										<input type="checkbox" value="COD" name="payment_method" class="checkboxx">
-										Cash On Delivery
-									  </label>
-									  <label>
-										
-											
-												<input type="checkbox" checked id="f-option5" name="payment_method"
-													value="razorpay">
-												<label for="f-option5">Razor Pay</label>
-									  </label>
-									 
-									  <div class="col-md-6 wallet">
-										<% let Ttotal =user.totalPrice %>
-										<% if (Ttotal<=user.totalWallet) { %>
-									  <label class="anim">
-										<input type="checkbox" value="wallet" name="payment_method" class="checkbox" onchange="handlePaymentSelection(this)">
-										<label for="">Pay with Wallet</label>
-									  </label>
-									  
-										<% } %>	<br>
-									  
-									</div>
-                                     <button class="col submit check_out" id="placeOrderButton" type="submit">Place Order</button>
-                                 
-                                </div>
-                              </div>
-                            </div>
-                            
-                        </form>
-                    </div>
-                   
+			  <div class="col-md-6">
+				<div class="cart-detail bg-light p-3 p-md-4">
+				  <h3 class="billing-heading mb-4">Payment Method</h3>
+			  
+				  <div class="check_box_one cashon_delivery">
+					<form action="/placeOrder?id=<%= address._id%>" method="post">
+					  <div class="form-group">
+						<div class="col-md-12">
+						  <div class="radio">
+							<input
+							  type="hidden"
+							  name="selectedPaymentMethod"
+							  id="selectedPaymentMethod"
+							  value=""
+							/>
+							<label>
+							  <input
+								type="checkbox"
+								value="COD"
+								name="payment_method"
+								class="checkboxx"
+								id="codCheckbox"
+							  />
+							  Cash On Delivery
+							</label>
+							<label>
+							  <input
+								type="checkbox"
+								id="razorpayCheckbox" 
+								name="payment_method"
+								value="razorpay"
+							  />
+							  <label for="f-option5">Razor Pay</label>
+							</label>
+			  
+							<button
+							  class="col submit check_out"
+							  id="placeOrderButton"
+							  type="submit"
+							>
+							  Place Order
+							</button>
+						  </div>
+						</div>
+					  </div>
+					</form>
+				  </div>
 				</div>
-	          	</div>
+			  </div>
 	          </div>
           </div> <!-- .col-md-8 -->
         </div>
@@ -211,4 +209,24 @@ document.querySelectorAll('input[name="paymentMethodRadio"]').forEach((radio) =>
 	}
   </script>
 
-<%- include('../layout/footer.ejs') %>
+<script>
+	// Add event listeners to the checkboxes
+	const codCheckbox = document.getElementById("codCheckbox");
+	const razorpayCheckbox = document.getElementById("razorpayCheckbox");
+  
+	codCheckbox.addEventListener("change", function () {
+	  // When the COD checkbox changes, uncheck the Razor Pay checkbox
+	  if (codCheckbox.checked) {
+		razorpayCheckbox.checked = false;
+	  }
+	});
+  
+	razorpayCheckbox.addEventListener("change", function () {
+	  // When the Razor Pay checkbox changes, uncheck the COD checkbox
+	  if (razorpayCheckbox.checked) {
+		codCheckbox.checked = false;
+	  }
+	});
+  </script>
+  
+  <%- include('../layout/footer.ejs') %>
