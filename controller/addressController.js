@@ -28,15 +28,28 @@ const ProfileAddAddress = async (req, res) => {
       return;
     }
 
-    // Create a new address object
+    // Validate the input fields
+    const { name, mobile, email, houseName, district, state, pincode } = newAddress;
+    if (!name || !mobile || !email || !houseName || !district || !state || !pincode) {
+      res.status(400).send("All fields are required.");
+      return;
+    }
+
+    // Validate mobile number format (must be exactly 10 digits)
+    if (!/^\d{10}$/.test(mobile)) {
+      res.status(400).send("Mobile number must be exactly 10 digits.");
+      return;
+    }
+
+    // Remove spaces from user input
     const addressObject = {
-      name: newAddress.name,
-      mobile: newAddress.mobile,
-      email: newAddress.email,
-      houseName: newAddress.houseName,
-      district: newAddress.district,
-      state: newAddress.state,
-      pincode: newAddress.pincode,
+      name: name.trim(),
+      mobile: mobile.trim(),
+      email: email.trim(),
+      houseName: houseName.trim(),
+      district: district.trim(),
+      state: state.trim(),
+      pincode: pincode.trim(),
     };
 
     user.deliveryAddress.push(addressObject);
@@ -45,8 +58,10 @@ const ProfileAddAddress = async (req, res) => {
     res.redirect(`/profile-address`);
   } catch (error) {
     console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 };
+
 
 // ............profile edit address.........
 

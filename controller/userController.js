@@ -134,20 +134,17 @@ const insertUser = async (req, res) => {
    
     
 
-  // Send OTP to the user via SMS
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  
-  req.session.otp = otp;
+
   // console.log(otp);
     const phoneNumbers = [mobile]; // Add other phone numbers here if needed
     for (const phoneNumber of phoneNumbers) {
       const verification = await client.verify.v2
         .services(verifySid)
         .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
-      console.log(`OTP sent to ${phoneNumber}: ${otp}`);
+      // console.log(`OTP sent to ${phoneNumber}: ${otp}`);
     }
 
-    console.log(otp);
+ 
  
 
     req.session.user = {
@@ -172,36 +169,34 @@ const insertUser = async (req, res) => {
 
 const resendOtp = async (req, res) => {
   try {
-    const otp = Math.floor(100000 + Math.random() * 900000);
-   
-    const mobile = req.session.user.mobile; // Assuming 'user' object contains 'mobile'
-   
-    const phoneNumbers = [mobile]; // Add other phone numbers here if needed
-    //
-    for (const phoneNumber of phoneNumbers) {
-      const verification = await client.verify.v2
-        .services(verifySid)
-        .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
- 
-      console.log(`OTP sent to ${phoneNumber}: ${otp}`);
-    }
-
-    // Store the OTP and user data in the session
-    req.session.otp = otp;
-    const userData = req.session.user;
-    req.session.user = {
-      name: userData.name,
-      email: userData.email,
-      mobile: userData.mobile,
-      // address: userData.address,
-      password: userData.password,
-      is_admin: userData.is_admin,
-    };
-
+    
+      const userData = req.session.user;
+      console.log(userData,'kkk');
+      if (!userData) {
+        return res.status(400).json({ message: "Invalid or expired session" });
+      }
+  
+      // Assuming you have already defined the `client` and `verifySid` somewhere
+      const mobile = userData.mobile;
+      const phoneNumbers = mobile; // Add other phone numbers here if needed
+  
+      for (const phoneNumber of phoneNumbers) {
+        const verification = await client.verify.v2
+          .services(verifySid)
+          .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
+      }
+  
+      req.session.user = {
+        username: userData.name,
+        email: userData.email,
+        mobile: userData.mobile,
+        password: userData.password,
+        is_admin: userData.is_admin,
+      };
     res.redirect("/verifyOtp");
   } catch (error) {
     console.log(error.message);
-    return res.render("register", { message: "All fields should be filled" });
+    return res.render("verifyOtp", { message: "incorrect " });
   }
 };
 
@@ -230,11 +225,17 @@ const loadVerifyOtp = async (req, res) => {
 const verifyOTP = async (req, res) => {
   try {
     const otp = req.body.otp;
-    if (otp == req.session.otp) {
-      // OTP is correct, proceed with login
-      const userData = req.session.user;
-      req.session.user_id = req.session.user_id;
-      req.session.otp = undefined; // Clear OTP after successful verification
+    const userData = req.session.user;
+      const verification = await client.verify.v2
+        .services(verifySid)
+        .verificationChecks.create({
+          to: `+91${userData.mobile}`,
+          code: otp,
+        });
+  if (verification.status === "approved") {
+      console.log("Verification successful!");
+
+    req.session.user_id = req.session.user_id; // Clear OTP after successful verification
       const user = new User({
         name: userData.name,
         email: userData.email,
@@ -312,21 +313,24 @@ const loadForgotPassword = async (req, res) => {
 };
 
 const forgotverifyNumber = async (req, res) => {
-  req.session.mobile = req.body.mobile;
-  const user = await User.findOne({ mobile: req.session.mobile });
-  req.session.user = user;
-
-  if (!user) {
-    res.render("forgotNumber", { message: "User Not Registered" });
-  } else {
-    let forgotOtp = generateOTP();
-    req.session.forgotOtp = forgotOtp;
-    console.log(forgotOtp);
-    console.log(req.session.forgotOtp);
-
+  const mobile = req.body.mobile; // Initialize 'mobile' here
+  console.log(mobile,'mob');
+  const user = await User.findOne({ mobile });
+  
+  if (user) {
+    const phoneNumbers = [mobile]; // Add other phone numbers here if needed
+    for (const phoneNumber of phoneNumbers) {
+      const verification = await client.verify.v2
+        .services(verifySid)
+        .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" });
+      // console.log(`OTP sent to ${phoneNumber}: ${otp}`);
+    }
     res.redirect("/forgotOtpVerify");
+  } else {
+    res.render("forgotOtpVerify", { message: "User Not Registered", mobile: req.body.mobile }); // Pass 'mobile' to the template
   }
 };
+
 
 const loadOtpPage = async (req, res) => {
   try {
@@ -339,19 +343,41 @@ const loadOtpPage = async (req, res) => {
 const forgotOtpverify = async (req, res) => {
   try {
     const otp = req.body.otp;
+    const userData = req.session.user;
+      const verification = await client.verify.v2
+        .services(verifySid)
+        .verificationChecks.create({
+          to: `+91${userData.mobile}`,
+          code: otp,
+        });
+  if (verification.status === "approved") {
+      console.log("Verification successful!");
 
-    console.log(otp);
+    req.session.user_id = req.session.user_id; // Clear OTP after successful verification
+      const user = new User({
+        name: userData.name,
+        email: userData.email,
+        mobile: userData.mobile,
+        // address: userData.address,
+        password: userData.password,
+        is_admin: userData.is_admin,
+      });
 
-    if (otp == req.session.forgotOtp) {
-      res.redirect("/loadrewritePassword");
+  
+
+      return res.redirect("/loadrewritePassword");
+      // return res.render('registration', { message: 'Register successful' });
     } else {
-      res.render("forgotOtpVerify", { message: "Incorrect OTP" });
+      // Incorrect OTP
+      return res.render("forgotOtpVerify", { message: "Incorrect OTP" });
     }
   } catch (error) {
     console.log(error.message);
     return res.render("forgotOtpVerify", { message: "An error occurred" });
   }
 };
+
+
 
 const forgotresendOtp = async (req, res) => {
   try {
@@ -387,52 +413,139 @@ const loadrewritePassword = async (req, res) => {
   }
 };
 
+// const WritePassword = async (req, res) => {
+//   try {
+//     const user = req.session.user;
+//     const userId = user._id;
+//     const newPassword = req.body.password;
+//     const confirmPassword = req.body.confirmPassword;
+
+//     const passwordHash = await securePassword(newPassword);
+
+//     await User.findByIdAndUpdate(userId, { password: passwordHash });
+//     res.redirect("/login");
+//   } catch (error) {
+//     console.log(error.message);
+//     // Handle the error appropriately (e.g., show an error message to the user)
+//   }
+// };
 const WritePassword = async (req, res) => {
   try {
-    const user = req.session.user;
-    const userId = user._id;
-    const newPassword = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+    const newPassword = req.body.newPassword;
+    const confirmPassword = req.body.newconfirmPassword;
 
-    const passwordHash = await securePassword(newPassword);
+    if (!newPassword || !confirmPassword) {
+      return res.render("forgotPassword", {
+        message: "Both password fields are required",
+      });
+    }
 
-    await User.findByIdAndUpdate(userId, { password: passwordHash });
-    res.redirect("/login");
+    if (newPassword !== confirmPassword) {
+      return res.render("forgotPassword", { message: "Passwords do not match" });
+    }
+
+    // Hash the new password before saving
+    const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password in the database
+    const user_id = req.session.user._id; // Assuming 'user' is correctly set in the session
+    const user = await User.findByIdAndUpdate(
+      user_id,
+      { password: newPasswordHash },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.redirect("/login");
+    }
+
+    // Clear the OTP from the session
+    req.session.forgotOtp = undefined;
+
+    return res.render("login", {
+      message: "Password changed successfully",
+    });
   } catch (error) {
     console.log(error.message);
-    // Handle the error appropriately (e.g., show an error message to the user)
+    return res.render("forgotPassword", { message: "An error occurred" });
   }
 };
-
 const loadHome = async (req, res) => {
   try {
     const User = req.session.user;
+    
+    
+
     const banner = await Banner.find()
     res.render("home", { User , banner });
   } catch (error) {
     console.log(error.message);
   }
 };
+const loadContact = async (req, res) => {
+  try {
+    
+    res.render("contact");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const loadAbout = async (req, res) => {
+  try {
+    
+    res.render("about");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const ITEMS_PER_PAGE = 10;
 
 const loadShowProduct = async (req, res) => {
-  
-    try {
-      const searchQuery = req.query.search || ''; // Get the search query from the URL parameter
-      const products = await Product.find({
-        $or: [
-          { name: { $regex: `.*${searchQuery}.*`, $options: 'i' } }, // Case-insensitive name search
-          { description: { $regex: `.*${searchQuery}.*`, $options: 'i' } }, // Case-insensitive description search
-        ]
-      });
-  
-      const categories = await Category.find();
-      const User = req.session.user;
-      res.render("showProduct", { products, User, categories, searchQuery });
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Internal Server Error");
-    }
-  };
+  try {
+    const searchQuery = req.query.search || '';
+    const page = +req.query.page || 1;
+
+    const totalProducts = await Product.countDocuments({
+      is_listed: true,
+      $or: [
+        { name: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+        { description: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+      ],
+    });
+
+    const products = await Product.find({
+      is_listed: true,
+      $or: [
+        { name: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+        { description: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+      ],
+    })
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
+
+    const categories = await Category.find({});
+    const User = req.session.user;
+
+    res.render("showProduct", {
+      products,
+      User,
+      categories,
+      searchQuery,
+      totalProducts,
+      currentPage: page,
+      hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+      hasPrevPage: page > 1,
+      nextPage: page + 1,
+      prevPage: page - 1,
+      ITEMS_PER_PAGE,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
   
     
 
@@ -440,69 +553,53 @@ const loadShowProduct = async (req, res) => {
 
 const pricerange = async (req, res) => {
   try {
-    const ITEMS_PER_PAGE = 10;
-    const page = parseInt(req.query.page) || 1;
-    const skip = (page - 1) * ITEMS_PER_PAGE;
-    const totalProducts = await Product.countDocuments();
-    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
-    const categories = await Category.find({});
-    const users = req.session.user;
+    // Set the number of items per page
+    const page = +req.query.page || 1;
     const searchQuery = req.query.search || '';
     const min_price = req.body.min_price;
     const max_price = req.body.max_price;
 
-    let products = [];
+    // Define a filter object for MongoDB query
+    const filter = {
+      is_listed: true,
+      $or: [
+        { name: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+        { description: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
+      ],
+    };
 
-    // Apply the search query
-    if (searchQuery) {
-      products = await Product.find({
-        $or: [
-          { name: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
-          { description: { $regex: `.*${searchQuery}.*`, $options: 'i' } },
-        ]
-      });
-    } else {
-      // Fetch all products when no search query is provided
-      products = await Product.find();
-    }
-
-    // Apply the price range filter if min_price and max_price are provided
+    // Apply price range filter if both min_price and max_price are provided
     if (min_price !== undefined && max_price !== undefined) {
-      products = products.filter(product =>
-        product.price >= min_price && product.price <= max_price
-      );
+      filter.price = { $gte: min_price, $lte: max_price };
     }
 
-    const procount = products.length;
+    // Fetch the total count of products matching the filter
+    const totalProducts = await Product.countDocuments(filter);
 
-    // Determine if products meet the selected criteria
-    if (!procount) {
-      // Pass an empty array if there are no products matching the criteria
-      res.render("showProduct", {
-        users,
-        categories,
-        products: [],
-        currentPage: page,
-        totalPages,
-        msg: "No products match the selected criteria",
-        searchQuery,
-        min_price,
-        max_price
-      });
-    } else {
-      // Pass the products that meet the criteria to the template
-      const paginatedProducts = products.slice(skip, skip + ITEMS_PER_PAGE);
-      res.render("showProduct", {
-        users,
-        categories,
-        products: paginatedProducts,
-        currentPage: page,
-        totalPages,
-        searchQuery,
-        min_price,
-        max_price
-      });
-    }
+    // Use skip and limit to paginate the products
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+    const products = await Product.find(filter)
+      .skip(skip)
+      .limit(ITEMS_PER_PAGE);
+
+    const categories = await Category.find({});
+    const users = req.session.user;
+
+    res.render("showProduct", {
+      users,
+      categories,
+      products,
+      currentPage: page,
+      searchQuery,
+      min_price,
+      max_price,
+      totalProducts,
+      ITEMS_PER_PAGE,
+      hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+      hasPrevPage: page > 1,
+      nextPage: page + 1,
+      prevPage: page - 1,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -512,6 +609,7 @@ const pricerange = async (req, res) => {
 
 const filterByCategory = async (req, res) => {
   try {
+    const page = +req.query.page || 1;
     const categoryId = req.query.id;
     const category = await Category.find({});
     const selectedCategory = category.find(
@@ -522,20 +620,35 @@ const filterByCategory = async (req, res) => {
       is_listed: true,
     });
 
-    const product = await Product.find({
+    // Define a filter object to filter products by category
+    const filter = {
       category: categoryId,
       is_listed: true,
-    });
-    const user = req.session.user;
+    };
 
-    res.render("showProduct", {
-      user,
-      products: product,
-      categories: category,
-      totalProducts,
-      categoryName: selectedCategory ? selectedCategory.name : "All",
-      searchQuery: '' // Include an empty searchQuery to prevent the error
-    });
+    const user = req.session.user;
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+    
+    // Use the filter object in your Product.find() query
+    const products = await Product.find(filter)
+      .skip(skip)
+      .limit(ITEMS_PER_PAGE);
+
+      res.render("showProduct", {
+        user,
+        products: products, // Use the filtered products
+        categories: category,
+        totalProducts,
+        categoryName: selectedCategory ? selectedCategory.name : "All",
+        searchQuery: '',
+        ITEMS_PER_PAGE,
+        currentPage: page, // Ensure that currentPage is being passed
+        hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+        hasPrevPage: page > 1,
+        nextPage: page + 1,
+        prevPage: page - 1,
+      });
+      
   } catch (error) {
     console.log(error);
     res.status(500).send({ error: "internal server error" });
@@ -745,6 +858,8 @@ module.exports = {
   forgotresendOtp,
   OtpTimer,
   loadHome,
+  loadContact,
+  loadAbout,
   loadShowProduct,
   getQuantity,
   loadDetails,

@@ -1,11 +1,11 @@
-const { model } = require("mongoose");
+
 const User = require("../models/userModels");
 
 const isLoggedIn = (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    res.redirect("/");
+    res.redirect("/home");
   }
 };
 
@@ -26,7 +26,20 @@ const isblock = async (req, res, next) => {
   }
 };
 
+const isLogout = async (req, res, next) => {
+  try {
+    if (!req.session.user) {
+      res.redirect("/");
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   isLoggedIn,
   isblock,
+  isLogout
 };

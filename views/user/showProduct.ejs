@@ -11,10 +11,10 @@
           </div>
           <div class="col-md pr-4 d-flex topper align-items-center">
             <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-            <span class="text">youremail@email.com</span>
+            <span class="text">floris@email.com</span>
           </div>
           <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-            <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+            <span class="text">3-5 Business days delivery &amp; Easy Return</span>
           </div>
         </div>
       </div>
@@ -33,18 +33,8 @@
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a href="/home" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="/showProduct" class="nav-link">Shop</a></li>
-        <!-- <li class="nav-item dropdown active">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown04">
-            <a class="dropdown-item" href="product-single.html">Single Product</a>
-            <a class="dropdown-item" href="cart.html">Cart</a>
-            <a class="dropdown-item" href="checkout.html">Checkout</a>
-          </div>
-        </li> -->
-        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
         <% if(! locals.User) {%> 
           <li class="nav-item"><a href="/login"  class="nav-link">login</a> </li>
           <% } else {%>
@@ -62,7 +52,7 @@
   <div class="container">
     <div class="row no-gutters slider-text align-items-center justify-content-center">
       <div class="col-md-9 ftco-animate text-center">
-        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Shop</span></p>
+        <p class="breadcrumbs"><span class="mr-2"><a href="/home">Home</a></span> <span>Shop</span></p>
         <h1 class="mb-0 bread">Shop</h1>
       </div>
     </div>
@@ -73,7 +63,7 @@
   <form action="/your-search-route" method="GET" class="d-flex">
     <div class="input-group" style="width: 700px;">
       <input type="text" name="search" value="<%= searchQuery %>" class="form-control" placeholder="Search products">
-      <button type="submit" class="btn btn-outline-dark">
+      &nbsp; &nbsp; &nbsp;  <button type="submit" class="btn btn-outline-dark " style="border-radius: 70px;">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
     </div>
@@ -86,74 +76,84 @@
     <div class="row" >
       <div class="col-md-8 col-lg-10 order-md-last">
 
-        <div class="row" style="margin-left: 100px;">
-          <% let count = 0; %>
-          <% products.forEach(product => { %>
+        <div class="row" >
+            <% let count = 0; %>
+            <% products.forEach(product => { %>
               <% if (product.is_listed) { %>
-                  <% if (count % 3 === 0 && count !== 0) { %>
-                      </div>
-                      <div class="row">
-                  <% } %>
-                  <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate d-flex">
-                      <% if (product && product.price !== null && typeof product.price === 'number') { %>
-                          <a href="/single-product?id=<%= product._id %>" style="text-decoration: none;">
-                              <div class="product">
-                                  <a href="/single-product?id=<%= product._id %>" class="img-prod">
-                                      <img class="img-fluid" src="/uploads/<%= product.images[0] %>" alt="<%= product.name %>">
-                                      <div class="overlay"></div>
-                                  </a>
-                                  <div class="text py-3 pb-4 px-3">
-                                      <div class="d-flex">
-                                          <div class="cat">
-                                              <span>Lifestyle</span>
-                                          </div>
-                                      </div>
-                                      <h3><a href="/single-product?id=<%= product._id %>"><%= product.name %></a></h3>
-                                      <div class="pricing">
-                                          <p class="price"><%= product.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></p>
-                                      </div>
-                                      <p class="bottom-area d-flex px-3">
-                                          <a href="" class="add-to-cart text-center py-2 mr-1"  id="addToCartBtn_<%= product.id %>"onclick="addToCart('<%= product.id %>')">
-                                              <span>Add to cart <i class="ion-ios-add ml-1"></i></span>
-                                          </a>
-                                          <a href="#" class="buy-now text-center py-2">
-                                              Buy now<span><i class="ion-ios-cart ml-1"></i></span>
-                                          </a>
-                                      </p>
-                                  </div>
-                              </div>
-                          </a>
-                      <% } else { %>
-                          <p>Product details not available.</p>
-                      <% } %>
+                <% if (count % 3 === 0 && count !== 0) { %>
                   </div>
-                  <% count++; %>
+                  <div class="row mt-4"> <!-- Add margin-top to create space between rows of products -->
+                <% } %>
+                <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate">
+                  <div class="d-flex flex-item-end"> <!-- Apply flex classes to align product content to the right -->
+                    <% if (product && product.price !== null && typeof product.price === 'number') { %>
+                      <a href="/single-product?id=<%= product._id %>" style="text-decoration: none;">
+                        <div class="product">
+                          <a href="/single-product?id=<%= product._id %>" class="img-prod">
+                            <img class="img-fluid" src="/uploads/<%= product.images[0] %>" alt="<%= product.name %>">
+                            <div class="overlay"></div>
+                          </a>
+                          <div class="text py-3 pb-4 px-3">
+                            <div class="d-flex">
+                              <div class="cat">
+                                <span>Lifestyle</span>
+                              </div>
+                            </div>
+                            <h3><a href="/single-product?id=<%= product._id %>"><%= product.name %></a></h3>
+                            <div class="pricing">
+                              <p class="price"><%= product.price.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></p>
+                            </div>
+                            <p class="bottom-area d-flex px-3">
+                              <a href="" class="add-to-cart text-center py-2 mr-1" id="addToCartBtn_<%= product.id %>" onclick="addToCart('<%= product.id %>')">
+                                <span>Add to cart <i class="ion-ios-add ml-1"></i></span>
+                              </a>
+                              <a href="#" class="buy-now text-center py-2">
+                                Buy now<span><i class="ion-ios-cart ml-1"></i></span>
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    <% } else { %>
+                      <p>Product details not available.</p>
+                    <% } %>
+                  </div>
+                </div>
+                <% count++; %>
               <% } %>
-          <% }) %>
-      </div>
+            <% }) %>
+          </div>
+          
       
 
 
 
 
+                
         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">
               <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&gt;</a></li>
+                
+                  <% if (hasPrevPage) { %>
+                    <li> <a href="?page=<%= prevPage %>" class="prev-arrow">&lt;</a></li>
+                  <% } %>
+                  <% for (let i = 1; i <= Math.ceil(totalProducts / ITEMS_PER_PAGE); i++) { %>
+                    <li><a href="?page=<%= i %>" <% if (currentPage === i) { %>class="active"<% } %>><%= i %></a></li>
+                  <% } %>
+                  <% if (hasNextPage) { %>
+                  <li><a href="?page=<%= nextPage %>" class="next-arrow">&gt;</a></li>
+                  <% } %>
+              
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4 col-lg-2">
+     
+
+      <div class="col-md-4 col-lg-2"  >
         <div class="sidebar">
           <div class="sidebar-box-2">
             <h2 class="heading">Categories</h2>

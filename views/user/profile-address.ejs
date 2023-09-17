@@ -108,9 +108,6 @@
           <a href="/user-order?id=<%= user._id %>" class="text-reset"> Order Details</a>
         </li>
         <li class="list-group-item py-1">
-          <a href="/user-order?id=<%= user._id %>" class="text-reset"> Order Details</a>
-        </li>
-        <li class="list-group-item py-1">
           <a href="/logout" class="text-reset">Logout</a>
         </li>
         <div class="card mb-4 mb-lg-0">
@@ -131,7 +128,11 @@
                 <div class="cart-detail p-3">
                   <div class="cart-detail p-3 p-md-4 col-md-12">
                     <h3 class="billing-heading mb-4">Your Address</h3>
+                <% if (!user.deliveryAddress) {%>
+                  <h5>no address added</h5>
                 
+                  <% } else {%>
+                   
                     <% 
                     for (let i = 0; i < user.deliveryAddress.length; i++) {
                         const addressItem = user.deliveryAddress[i];
@@ -289,7 +290,7 @@
                         Address
               
            </a>
-
+           <% } %>
            <div class="modal fade" id="profile-add-address" role="dialog">
             <div class="modal-dialog">
               <form action="/profile-add-address" method="POST"  class="form" role="form" autocomplete="off">
@@ -307,7 +308,7 @@
                               name="name"
                               placeholder=""
                               value=""
-                              required
+                              
                             />
                           </div>
                           <div class="col-md-6 mb-3">
@@ -319,7 +320,7 @@
                               name="mobile"
                               placeholder=""
                               value=""
-                              required
+                             
                             />
                           </div>
                         </div>
@@ -342,7 +343,7 @@
                             class="form-control"
                             name="houseName"
                             placeholder="1234 Main St"
-                            required
+                            
                           />
                         </div>
                         <div class="row">
@@ -362,7 +363,7 @@
                             <select
                               class="custom-select d-block w-100"
                               name="state"
-                              required
+                              
                             >
                               <option value="">Choose...</option>
                               <option>Kerala</option>
@@ -375,7 +376,7 @@
                             <select
                               class="custom-select d-block w-100"
                               name="district"
-                              required
+                              
                             >
                               <option value="">Choose...</option>
                               <option>Thrissur</option>

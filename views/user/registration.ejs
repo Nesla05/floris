@@ -2,72 +2,152 @@
 
 
 
-<section class="bg-dark">
-  <div class="container py-3 ">
-    <div class="row d-flex justify-content-center align-items-center ">
-      <div class="col">
-        <div class="card card-registration my-4">
-          <div class="row ">
-            <!-- <div class="col-xl-6 d-none d-xl-block">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
-                alt="Sample photo" class="img-fluid"
-                style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
-            </div> -->
+<style>
+
+  section{
+    background-image: url(images/log.jpg);
+    background-size: cover;
+  }
+
+  .card{
+    background-color: rgba(240, 248, 255, 0.537);
+    
+  }
+.button{
+  background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 51%, #fbc2eb 100%);
+  margin: 10px;
+            /* padding: 15px 45px; */
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            /* color: white;             */
+            /* box-shadow: 0 0 20px #eee; */
+            border-radius: 10px;
+            display: block;
+          }
+
+          .button:hover {
+            background-position: right center; /* change the direction of the change here */
+            /* color: #fff; */
+            text-decoration: none;
+          }
+
+          input::placeholder {
+    font-size: 14px; /* Adjust the font size as needed */
+  }
+
+
+</style>
+
+<div class="py-1 bg-black">
+  <div class="container">
+    <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+      <div class="col-lg-12 d-block">
+        <div class="row d-flex">
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+            <span class="text">+ 1235 2355 98</span>
+          </div>
+          <div class="col-md pr-4 d-flex topper align-items-center">
+            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+            <span class="text">youremail@email.com</span>
+          </div>
+          <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+            <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="vh-100 bg-image">
+  
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	<div class="container">
+		<div class="logo">
+		<img src="images/floris-logo.png" alt="logo" style="width: 150px;">
+	</div>
+	   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+		 <span class="oi oi-menu"></span> Menu
+	   </button>
+      </ul>
+	  </div>
+	</div>
+  </nav>
+
+
+
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <!-- <div class="col-12 col-md-9 col-lg-7 col-xl-6"> -->
+        <div class="card border border-secondary" style="border-radius: 15px;">
+          <div class="card-body ">
+            
             <div class="">
               <div class="card-body p-md-5 text-black">
                 <form class="mx-1 mx-md-4 text-black rounded" action="/register" method="post">
+                  <h2 class="login text-uppercase text-center mb-5" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">SIGNUP</h2>
 
-                <h3 class="mb-5 text-uppercase">Sign Up</h3>
-
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline">
-                      <label class="form-label" for="form3Example1m">Name</label>
-                      <input type="text" id="form3Example1m" class="form-control form-control-lg" name="name" />
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Example1m">Name</label>
+                        <input type="text" id="form3Example1m" placeholder="Enter Your Name" class="form-control form-control-lg" name="name" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Example1m1">Mobile</label>
+                        <input type="text" id="form3Example1m1" placeholder="Enter Your Number" class="form-control form-control-lg" name="mobile" />
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline">
-                      <label class="form-label" for="form3Example1m1">Mobile</label>
-                      <input type="text" id="form3Example1m1" class="form-control form-control-lg" name="mobile" />
-                    </div>
-                  </div>
-                </div>
-                 
-                  <div class=" form-outline mb-4">
+
+                  <div class="form-outline mb-4">
                     <div class="form-outline">
                       <label class="form-label" for="form3Example1n">Email</label>
-                      <input type="email" id="form3Example1n" class="form-control form-control-lg" name="email" />
+                      <input type="email" id="form3Example1n" placeholder="Enter Your Email" class="form-control form-control-lg" name="email" />
                     </div>
                   </div>
-                 
 
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline">
-                      <label class="form-label" for="form3Example1n1">Password</label>
-                      <input type="password" id="form3Example1n1" class="form-control form-control-lg" name="password" />
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Example1n1">Password</label>
+                        <input type="password" id="form3Example1n1" placeholder="Enter Your Password" class="form-control form-control-lg" name="password" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <label class="form-label" for="form3Example8">Confirm Password</label>
+                      <input type="password" id="form3Example8" placeholder="Enter Your password again" class="form-control form-control-lg" name="confirmPassword" />
                     </div>
                   </div>
-               <div  class="col-md-6 mb-4">
-                <label class="form-label" for="form3Example8">Confirm Password</label>
-                  <input type="password" id="form3Example8" class="form-control form-control-lg" name="confirmPassword" />
-                </div>
-              </div>
-               
-               <div class="d-flex justify-content-end pt-3">
-                  <!-- <button type="button" class="btn btn-light btn-lg">Reset all</button> -->
-                  <button type="submit" class="btn  btn-block btn-sm text-body font-weight-bold">Register</button>
-                  
-                </div>
 
-                <p style="color: rgb(198, 4, 4); font-weight: bold;" class="text-center">
-                  <%=(typeof message!=='undefined')?message:""%>
-                </p>
-                <p class="text-center small mt-5 mb-0">Have already an account? <a href="/login" class="fw-bold text-body"><u>Login here</u></a></p>
-                <br>
-              </form>
+                  <div class="button d-flex justify-content-center">
+                    <button type="submit"
+                    class="btn btn-block btn-lg ">Register</button>
+                   </div>
+
+                  <p style="color: rgb(198, 4, 4); font-weight: bold;" class="text-center">
+                    <%=(typeof message!=='undefined')?message:""%>
+                  </p>
+                  <p class="text-center small mt-5 mb-0">Have already an account? <a href="/login" class="fw-bold text-body"><u>Login here</u></a></p>
+                
+                </form>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
             </div>
           </div>
         </div>
@@ -77,6 +157,6 @@
 </section>
 
 
-
+ 
 
 

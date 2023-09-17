@@ -70,14 +70,16 @@ user_route.get('/login', userController.loginLoad);
 user_route.post('/login', userController.verifyLogin);
 
 user_route.get('/', userController.loadHome);
-user_route.get('/home', auth.isblock, userController.loadHome);
+user_route.get('/home', auth.isblock, auth.isLogout, userController.loadHome);
 
+user_route.get('/contact',userController.loadContact)
+user_route.get('/about',userController.loadAbout)
 user_route.get('/showProduct', auth.isblock, userController.loadShowProduct);
 user_route.get('/your-search-route',userController.loadShowProduct)
-// user_route.get('/filter',userController.filter);
+
 user_route.post('/pricerange', auth.isblock, userController.pricerange);
 user_route.get( '/filter-by-category', auth.isblock,userController.filterByCategory,);
-//produt Details
+
 
 user_route.get('/single-product', auth.isblock, userController.loadDetails);
 user_route.get( '/showProduct/get-quantity', auth.isblock,quantityController.getQuantity,);
@@ -98,7 +100,7 @@ user_route.get('/order-cancel', orderController.ordercancel);
 user_route.post('/order_Return',orderController.orderReturn);
 user_route.get('/wallet',orderController.wallet)
 user_route.get('/invoice',userController.invoice)
-// cart Route
+
 user_route.get('/cartt/:id',auth.isLoggedIn,auth.isblock,cartController.add_to_cart,);
 user_route.get('/cartt', cartController.userCart);
 

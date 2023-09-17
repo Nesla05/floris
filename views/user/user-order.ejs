@@ -103,8 +103,16 @@
           </div>
           <div class=" mb-4 p-5 " style="margin-bottom: 10px;"><br>
            
-          
+          <% if(order_data) {%>
+            <div style="margin-left: 200px;">
+           <img src="images/icon.jpg" alt="" srcset="" style="width: 200px;">
+          <h4 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-left: 20px;" >No recent orders</h4>
+          <a href="/showProduct" style="color: rgb(192, 13, 22); margin-left: 50px; font-weight: bolder;">Start shopping</a>
+                   
+        </div>
+          <% } else { %>
             <div class="card">
+              <% } %>
               <% order_data.forEach((order, index) => { %>
                 <div class="card-body mb-4">
                   <div class="card-header">

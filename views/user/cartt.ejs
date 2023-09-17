@@ -12,10 +12,10 @@
 					    </div>
 					    <div class="col-md pr-4 d-flex topper align-items-center">
 					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-						    <span class="text">youremail@email.com</span>
+						    <span class="text">floris@email.com</span>
 					    </div>
 					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+						    <span class="text">3-5 Business days delivery &amp; Easy Returns</span>
 					    </div>
 				    </div>
 			    </div>
@@ -35,9 +35,8 @@
 	          <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
             <li class="nav-item"><a href="/showProduct" class="nav-link">Shop</a></li>
 	         
-	          <li class="nav-item"><a href="" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
+	          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="/Contact" class="nav-link">Contact</a></li>
 
 	        </ul>
 	      </div>
@@ -79,7 +78,7 @@
              
            
            </div>
-        
+        <br>
         </div>
          
          </div>
@@ -134,7 +133,7 @@
                       
                       <samp>
                         <input id="stock_<%= cartId %>_<%= product.productId._id %>" max="100"
-                          name="stock" value="<%= product.stock %>" type="number" class="form-control form-control-s" />
+                          name="stock" value="<%= product.stock %>" class="form-control form-control-s" />
                         <span id="stock-message-<%= cartId %>_<%= product.productId._id %>"></span>
                       </samp>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -162,109 +161,102 @@
 
          
     		</div>
-    		<div class="row justify-content-start">
-         
-    			<div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate" >
-            <form action="/checkoutt" method="get">
 
-            <div class="d-flex"> 
+<div class="container">
+  <form action="/checkoutt" method="get">
+
+  <div class="row justify-content-around">
+    
+    <div class="col-4">
+      
+      <div class="cart-total">
+        <h3>Cart Total</h3>
+        <p class="d-flex" >   
+                    
+          <% let total = 0; %>
+          <% products.forEach(product => { %>
+            <% total += product.productId.orginalPrice *
+              product.stock; %>
+          <% }); %>
+          <span>Total Price</span>
+          <span><%= total.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+        </p>
+    
+        <% let totalPrices = 0; %> <% products.forEach(product => {
+          %> <% totalPrices += product.productId.price *
+          product.stock; %> <% }); %>
+    
+        <p class="d-flex">
+          <% let discount=0; %>
+          <% products.forEach(product =>  { %>
+            <% discount = totalPrices - product.productId. orginalPrice * product.stock;;
+            %> <% }); %>
+    
+          <span>Discount</span>
+          <span class="text-success">&nbsp;<%= discount.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+        </p>
+    
+        <p class="d-flex">
+          <span>Subtotal</span>
+          <span> <%= totalPrices.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+        </p>
+    
+        <p class="d-flex">
+          <span>Coupon Discount</span>
+          <span id="coupon" class="text-success">-</span>
+          <span class="text-dark" id="couponName"></span>
+          <li class="mt-n3 mb-n2 d-none" id="removeBtn"><span> <a href="#" id="removeCouponLink" data-remove-url="/cartt/remove-coupon/<%= user._id %>" class="text-danger">Remove</a></span></li>
+        </p>
+    
+        <p class="d-flex">
+          <span>Delivery</span>
+          <span class="text-success"> <%= deliveryFee.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+        </p>
+    
+        <p class="d-flex">
+          <span>GST</span>
+          <span><%= Math.floor(gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+        </p>
+    
+        <hr>
+    
+        <p class="d-flex total-price" >
+          <% let totalPrice = 0; %> <% products.forEach(product => {
+            %> <% totalPrice += product.productId.price *
+            product.stock; %> <% }); %>
+    
+          <span>Total</span>
+          <% if(deliveryFee === 'free') {%>
+          <span id="totalPrice"  ><%= (totalPrices + 0 + gstAmount ).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+          <% } else  { %>
+          <span id="totalPrice" ><%= (totalPrices + 40 + gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
+          <% } %>
+        </p>
+        <button type="submit " class="text-center  py-3 px-4">Proceed to Checkout</button>
+     
+    </div>
              
-              
-    				<div class="cart-total">
-    					<h3>Cart Totals</h3>
-
-             <p class="d-flex">   
-              <% let total = 0; %>
-              <% products.forEach(product => { %>
-                <% total += product.productId.orginalPrice *
-                  product.stock; %>
-              <% }); %>
-              <span>Total Price</span>
-              <span><%= total.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-           
-             </p>
-
-
-                <% let totalPrices = 0; %> <% products.forEach(product => {
-                  %> <% totalPrices += product.productId.price *
-                  product.stock; %> <% }); %>
-    					
-              
-              <p class="d-flex">
-                <% let discount=0; %>
-                <% products.forEach(product =>  { %>
-                  <% discount = totalPrices - product.productId. orginalPrice * product.stock;;
-                  %> <% }); %>
-                  
-                  <span>Discount</span>
-                <span class="text-success">&nbsp;<%= discount.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-              </p>
-
-              <p class="d-flex">
-                <span>Subtotal</span>
-                 <span> <%= totalPrices.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-               </p>
-               
-
-              <p class="d-flex">
-                <span>Coupon Discount</span>
-               <span id="coupon" class="text-success">-</span>
-               <span class="text-dark" id="couponName"></span>
-               <li class="mt-n3 mb-n2 d-none" id="removeBtn"><span> <a href="#" id="removeCouponLink" data-remove-url="/cartt/remove-coupon/<%= user._id %>" class="text-danger">Remove</a></span></li>
-
-              </p>
-
-          
-            
-    					<p class="d-flex">
-    						<span>Delivery</span>
-    						<span class="text-success"> <%= deliveryFee.toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-    					</p>
-    					<p class="d-flex">
-    						<span>GST</span>
-                <span><%= Math.floor(gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-              </p>
-    					<hr>
-    					<p class="d-flex total-price" >
-                <% let totalPrice = 0; %> <% products.forEach(product => {
-                  %> <% totalPrice += product.productId.price *
-                  product.stock; %> <% }); %>
-                
-    						<span >Total</span>
-                <% if(deliveryFee === 'free') {%>
-    						<span id="totalPrice"  ><%= (totalPrices + 0 + gstAmount ).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-                <% } else  { %>
-                  <span id="totalPrice" ><%= (totalPrices + 40 + gstAmount).toLocaleString(undefined, { style: 'currency', currency: 'INR' }) %></span>
-                
-                  <% } %>
-              </p>
-              <button type="submit " class="text-center  py-3 px-4">Proceed to Checkout</button>
-    				</div>
-            
-            <div class="">
-              <!-- Left side: Coupon section -->
-              
-                  <h6>Discount codes</h6>
-                  <div class="couserponter ">
-                    <% coupons.forEach((coupon,index)=>{ %>
-                      <div class="card cursor-pointer" style="cursor: pointer;">
-                        <div class="card-body couponBtn" data-id="<%= coupon._id %>" name="<%= coupon._id %>">
-                          <%= coupon.name %>
-                         
-                        </div>
-                       
-                      </div>
-                     
-                    <% }) %>
-                  </div>
-                  <p class="text-success" id="couponApplied">
-                   
-                  </p>
-                </ul>
+    </div>
+    <div class="col-4">
+      <div class="">
+        <h4>Couons</h4>
+        <div class="couserponter">
+          <% coupons.forEach((coupon,index)=>{ %>
+            <div class="card cursor-pointer" style="cursor: pointer;">
+              <div class="card-body couponBtn" data-id="<%= coupon._id %>" name="<%= coupon._id %>">
+                <%= coupon.name %>
               </div>
-            </div> 
-          </form>
-    			</div>
+            </div>
+          <% }) %>
+        </div>
+        <p class="text-success" id="couponApplied">
+        </p>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
         
     		</div>
 			</div>
@@ -486,3 +478,5 @@ function incrementStock(productId, cartId) {
       })
   })
 </script>
+
+<%- include('../layout/footer.ejs') %>
