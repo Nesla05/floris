@@ -125,33 +125,78 @@
     		</div>
 
 
-			<div class="tab-pane fade " id="horizontal-profile" style="max-height: 500px; overflow: auto; scroll-behavior: smooth;">
-				<% if(review.length){ %>
-				<% review.forEach(review=>{ %>
-				  <div class="container bg-light p-3 rounded-3 mb-3">
-					<div class="rating-stars mb-2">
-					  <% for(let i=0;i<review.rating;i++){ %>
-						<span class="star" ><i class="fa-solid fa-star"></i></span>
-					<% } %>
+			<div class="product__details__content my-5 py-3">
+				<div class="container">
+				  <div class="col">
+					<div class="demo-inline-spacing mt-3">
+					  <div class="" style="border-bottom: 1px solid #000; width: 100%;">
+					  <div class="list-group list-group-horizontal-md text-md-center col-6"  >
+						<style>
+						  .list-group-item.active{
+							background-color: #111111;
+							border-color: #111111;
+						  }
+						</style>
+						<a
+						  class="list-group-item list-group-item-action active"
+						  id="home-list-item"
+						  data-bs-toggle="list"
+						  href="#horizontal-home"
+						  style="border: none;"
+						  >Description</a
+						>
+						<a
+						  class="list-group-item list-group-item-action "
+						  id="profile-list-item"
+						  data-bs-toggle="list"
+						  href="#horizontal-profile"
+						  style="border: none;"
+						  >Reviews (<%= review.length %>)</a
+						>
+					  </div>
 					</div>
-					<div class="d-flex align-items-center">
-					  <h5 class=""><%= review.userName %></h5>
-					  <i class="bx bx-check-circle fs-5 ms-1"></i>
-					  <p class="ms-2 mb-0" style="opacity: 80%;">Certified Buyer</p>
+					  <div class="tab-content px-0 mt-4">
+						<div class="tab-pane fade show active" id="horizontal-home">
+						  <h5 class="mb-3">Product Information</h5>
+						  <%= product.description %>
+						</div>
+						<div class="tab-pane fade " id="horizontal-profile" style="max-height: 500px; overflow: auto; scroll-behavior: smooth;">
+						  <% if(review.length){ %>
+						  <% review.forEach(review=>{ %>
+							<div class="container row flex-row bg-light p-3 rounded-3 mb-3">
+							 
+							  <div class="d-flex align-items-center" style="margin-right: 100px; margin-left: 100px;">
+								<h5 class=""><%= review.userName %></h5> &nbsp; &nbsp; &nbsp;
+								<i class="bx bx-check-circle fs-5 ms-1"></i>
+								<p class="ms-2 mb-0" style="opacity: 80%;">Certified Buyer</p>
+							  </div>
+							  <div class="rating-stars mb-2">
+								<% for(let i=0;i<review.rating;i++){ %>
+								  <span class="star" ><i class="fa-solid fa-star"></i></span>
+							  <% } %>
+							 
+							  <!-- <hr style="background-color: #000; margin: 10px 0;"> -->
+							  <div>
+								<h5><%= review.reviewText %></h5>
+							  </div>
+							  <p class="mb-0 mt-2" style="opacity: 80%;"><%= review.timestamp.toLocaleDateString('en-US',{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %></p>
+							</div>
+						</div>
+						  <% }) %>
+						  <% }else{ %>
+							<div class="container d-flex justify-content-center align-items-center bg-light" style="height: 150px;">
+							  <h5>No Reviews</h5>
+							</div>
+							<% } %>
+						</div>
+						
+					  </div>
 					</div>
-					<hr style="background-color: #000; margin: 10px 0;">
-					<div>
-					  <h5><%= review.reviewText %></h5>
-					</div>
-					<p class="mb-0 mt-2" style="opacity: 80%;"><%= review.timestamp.toLocaleDateString('en-US',{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %></p>
 				  </div>
-				<% }) %>
-				<% }else{ %>
-				  <div class="container d-flex justify-content-center align-items-center bg-light" style="height: 150px;">
-					<h5>No Reviews</h5>
-				  </div>
-				  <% } %>
+				</div>
+				
 			  </div>
+			
 
     		
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

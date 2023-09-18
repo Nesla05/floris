@@ -302,7 +302,7 @@ const user_orderdetailspage = async (req, res) => {
       .populate("user")
       .populate("items.product")
       .populate("items.stock");
-
+console.log(order_data.items ,'hhhhhhhhhhhhhhhhhhhhhh');
     if (!order_data) {
       // Handle case when order is not found
       return res.status(404).send("Order not found");

@@ -8,7 +8,7 @@ const cartSchema = new mongoose.Schema(
       required: true,
     },
     deliveryFee: {
-      type: Number,
+      type: String,
       // required:true,
     },
     gstAmount: {

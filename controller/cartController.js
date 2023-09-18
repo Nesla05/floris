@@ -49,7 +49,15 @@ const userCart = async (req, res) => {
           }
 
           totalPrice += deliveryFee;
-
+          const updatedCart = await Cart.findOneAndUpdate(
+            { userId },
+            {
+              deliveryFee,
+              gstAmount,
+            },
+            { new: true } // Return the updated cart
+          );
+          console.log(  updatedCart)
           res.render("cartt", {
             user,
             products,

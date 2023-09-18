@@ -9,6 +9,14 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
+const loadHome = (req, res, next) => {
+  if (req.session.user) {
+    res.redirect("/home");
+  } else {
+    next();
+  }
+};
+
 const isblock = async (req, res, next) => {
   if (req.session.user) {
     const userId = req.session.user?._id;
@@ -40,6 +48,7 @@ const isLogout = async (req, res, next) => {
 
 module.exports = {
   isLoggedIn,
+  loadHome,
   isblock,
   isLogout
 };

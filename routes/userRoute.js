@@ -66,7 +66,7 @@ user_route.get('/loadrewritePassword', userController.loadrewritePassword);
 user_route.get('/forgotresend', userController.forgotresendOtp);
 user_route.post('/forgotPassword', userController.WritePassword);
 
-user_route.get('/login', userController.loginLoad);
+user_route.get('/login', auth.loadHome,userController.loginLoad);
 user_route.post('/login', userController.verifyLogin);
 
 user_route.get('/', userController.loadHome);

@@ -23,6 +23,16 @@ const orderSchema = new mongoose.Schema({
         required: true,
         min: 0,
       },
+      rating: {
+        type: Number,
+      },
+      review: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
     },
   ],
   discount: {
