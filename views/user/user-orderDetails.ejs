@@ -68,7 +68,7 @@
           </div>
           <br>
           <div>
-            <% if(item.product.rating){ %>
+            <% if(!item.product.rating){ %>
               <% if(order_data.status === 'Delivered' || order_data.status === 'retrun' || order_data.status === 'Refund') {%>
               <p style="cursor: pointer;" class="text-primary addReviewBtn" data-bs-toggle="modal" data-bs-target="#reviewModal"
               
