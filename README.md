@@ -1,0 +1,1 @@
+e-commerce platform for perfumes with OTP-based user registration/login, Razorpay payment integration, admin dashboard (user/sales/product/coupon management, sales data visualization), order tracking, and sales reports."
